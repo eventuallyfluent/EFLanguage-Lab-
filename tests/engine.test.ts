@@ -129,6 +129,16 @@ test("pan-Mandarin parsers load file-backed frequency and learner-reference list
   assert.equal(raw.tocfl.length > 100, true);
   assert.deepEqual(raw.tubelex.slice(0, 4).map((entry) => entry.word), ["的", "了", "是", "在"]);
   assert.deepEqual(raw.subtlex.slice(0, 4).map((entry) => entry.word), ["的", "我", "你", "是"]);
+  assert.equal(raw.tubelex[0].count > raw.tubelex[1].count, true);
+  assert.equal(raw.tubelex[0].videos > 0, true);
+  assert.equal(raw.tubelex[0].channels > 0, true);
+  assert.equal(raw.subtlex[0].count > raw.subtlex[1].count, true);
+  assert.equal(raw.subtlex[0].perMillion > 0, true);
+  assert.equal(raw.subtlex[0].contextCount > 0, true);
+  assert.equal(raw.hsk[0].simplified.length > 0, true);
+  assert.equal(raw.hsk[0].pinyin.length > 0, true);
+  assert.equal(raw.tocfl[0].word.length > 0, true);
+  assert.equal(raw.tocfl[0].level.length > 0, true);
 });
 
 test("pan-Mandarin vocabulary export creates ranked tagged concept entries", () => {
@@ -145,6 +155,31 @@ test("pan-Mandarin vocabulary export creates ranked tagged concept entries", () 
   assert.equal(vocab.some((entry) => entry.variants.some((variant) => variant.traditional && variant.traditional !== variant.simplified)), true);
   assert.equal(vocab.some((entry) => entry.category === "universal-core"), true);
   assert.equal(panMandarinVocabToCsv(vocab).startsWith("globalRank,conceptId,gloss"), true);
+});
+
+test("pan-Mandarin vocabulary ranking is deterministic and keeps representative memberships", () => {
+  const first = buildPanMandarinVocab();
+  const second = buildPanMandarinVocab();
+  const firstPageIds = ["cmn-7684", "cmn-4e86", "cmn-662f", "cmn-4f60", "cmn-6211", "cmn-4ed6", "cmn-5c31", "cmn-4e5f", "cmn-6709", "cmn-6211-4eec"];
+  assert.deepEqual(first.slice(0, 10).map((entry) => entry.conceptId), firstPageIds);
+  assert.deepEqual(second.slice(0, 10).map((entry) => entry.conceptId), firstPageIds);
+  assert.equal(new Set(first.map((entry) => entry.communicationPathRank)).size, first.length);
+
+  const de = first.find((entry) => entry.conceptId === "cmn-7684");
+  assert.ok(de);
+  assert.deepEqual(
+    de.sourceMemberships.map((membership) => membership.source),
+    ["HSK_3_0_REFERENCE", "SUBTLEX_CH", "TBCL_TOCFL_REFERENCE", "TUBELEX_CHINESE"]
+  );
+  assert.equal(de.sentenceReadiness.sentenceability, "function-frame");
+  assert.equal(de.variants[0].sourceRefs.includes("TUBELEX_CHINESE"), true);
+  assert.equal(de.variants[0].sourceRefs.includes("SUBTLEX_CH"), true);
+
+  const women = first.find((entry) => entry.conceptId === "cmn-6211-4eec");
+  assert.ok(women);
+  assert.equal(women.variants[0].simplified, "我们");
+  assert.equal(women.variants[0].traditional, "我們");
+  assert.equal(women.variants[0].pronunciationRegion, "shared");
 });
 
 test("pan-Mandarin CI candidates are review-only and keep bootstrap separate from CI+1", () => {
