@@ -1,14 +1,27 @@
+---
+gsd_state_version: 1.0
+milestone: v0.1
+milestone_name: milestone
+status: planning
+last_updated: "2026-07-03T12:23:30.573Z"
+progress:
+  total_phases: 6
+  completed_phases: 3
+  total_plans: 6
+  completed_plans: 6
+---
+
 # State: Eventually Fluent Mandarin
 
 **Updated:** 2026-07-03
-**Status:** Phase 3 planned; ready to execute
+**Status:** Phase 3 complete; Phase 4 ready to plan
 
 ## Project Reference
 
 See: `.planning/PROJECT.md` (updated 2026-07-03)
 
 **Core value:** The engine must produce a natural, source-backed 10k CI+1 Mandarin sentence ladder that can carry acquisition; every other surface supports that ladder.
-**Current focus:** Phase 3 - CI Authoring Quality Expansion
+**Current focus:** Phase 4 - Curriculum, Islands, And Review Queues
 
 ## Current Position
 
@@ -54,21 +67,27 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - Verified `npm.cmd test`: 45 passed, 0 failed.
 - Verified `npm.cmd run web:build`: passed after sandbox-escalated rerun.
 
-## Current Phase
+## Completed Phase
 
 ### Phase 3: CI Authoring Quality Expansion
 
 **Goal:** Increase useful CI authoring throughput while preserving strict separation between raw exposure deficits and learner-facing authored lines.
 
-**Open tasks:**
-
-Phase 3 has been planned into three atomic execution plans:
+**Plans:**
 
 - `03-01-PLAN.md`: Authorability Contract And Packet Provenance.
 - `03-02-PLAN.md`: Naturalness Gate Expansion.
 - `03-03-PLAN.md`: Coverage Deficit Reporting Without Forced Authoring.
 
-Remaining work is execution and verification.
+**Completed:**
+
+- Enforced authoring packet provenance so batches reject non-ready raw queue items.
+- Expanded authored CI naturalness regression tests for weak and vague lines.
+- Preserved the current accepted authored input set: 24 accepted, 0 rejected.
+- Added authorability-aware coverage reporting for ready, bootstrap-only, and needs-more-known-vocabulary deficits.
+- Surfaced ready exposure deficit in the local web app engine metrics.
+- Verified `npm.cmd test`: 47 passed, 0 failed.
+- Verified `npm.cmd run web:build`: passed after sandbox-escalated rerun.
 
 ## Key Decisions
 
@@ -105,7 +124,11 @@ Remaining work is execution and verification.
 - Completed `02-03`: Variant And Source Role Documentation.
 - Created `.planning/phases/02-source-path-hardening/02-VERIFICATION.md`.
 - Created Phase 3 research and execution plans under `.planning/phases/03-ci-authoring-quality-expansion/`.
+- Completed `03-01`: Authorability Contract And Packet Provenance.
+- Completed `03-02`: Naturalness Gate Expansion.
+- Completed `03-03`: Coverage Deficit Reporting Without Forced Authoring.
+- Created `.planning/phases/03-ci-authoring-quality-expansion/03-VERIFICATION.md`.
 
 ## Next Action
 
-Run `$gsd-execute-phase 3` to execute the CI Authoring Quality Expansion plans.
+Run `$gsd-plan-phase 4` to create atomic plans for Curriculum, Islands, And Review Queues.

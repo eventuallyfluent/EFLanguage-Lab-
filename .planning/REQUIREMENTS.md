@@ -21,11 +21,11 @@
 
 ### CI Authoring
 
-- [ ] **CI-01**: CI sentence targets, queues, authorable queues, batches, and compact packets remain generated from the acquisition path.
-- [ ] **CI-02**: Bootstrap-only and needs-more-known-vocabulary targets stay out of normal learner-facing authored CI packets.
-- [ ] **CI-03**: Authored CI validation rejects weak, vague, robotic, or fragment-like lines.
-- [ ] **CI-04**: Accepted authored lines promote into `sentence-stream.json` only after slot, vocabulary, and naturalness validation.
-- [ ] **CI-05**: Coverage reports make remaining exposure deficits visible without forcing bad learner-facing content.
+- [x] **CI-01**: CI sentence targets, queues, authorable queues, batches, and compact packets remain generated from the acquisition path.
+- [x] **CI-02**: Bootstrap-only and needs-more-known-vocabulary targets stay out of normal learner-facing authored CI packets.
+- [x] **CI-03**: Authored CI validation rejects weak, vague, robotic, or fragment-like lines.
+- [x] **CI-04**: Accepted authored lines promote into `sentence-stream.json` only after slot, vocabulary, and naturalness validation.
+- [x] **CI-05**: Coverage reports make remaining exposure deficits visible without forcing bad learner-facing content.
 
 ### Curriculum And Content
 
@@ -85,11 +85,11 @@
 | SRC-02 | Phase 2 | Complete |
 | SRC-03 | Phase 2 | Complete |
 | SRC-04 | Phase 2 | Complete |
-| CI-01 | Phase 3 | Planned |
-| CI-02 | Phase 3 | Planned |
-| CI-03 | Phase 3 | Planned |
-| CI-04 | Phase 3 | Planned |
-| CI-05 | Phase 3 | Planned |
+| CI-01 | Phase 3 | Complete |
+| CI-02 | Phase 3 | Complete |
+| CI-03 | Phase 3 | Complete |
+| CI-04 | Phase 3 | Complete |
+| CI-05 | Phase 3 | Complete |
 | CURR-01 | Phase 4 | Pending |
 | CURR-02 | Phase 4 | Pending |
 | CURR-03 | Phase 4 | Pending |
@@ -112,4 +112,4 @@
 
 ---
 *Requirements defined: 2026-07-03*
-*Last updated: 2026-07-03 after Phase 3 planning*
+*Last updated: 2026-07-03 after Phase 3 completion*
