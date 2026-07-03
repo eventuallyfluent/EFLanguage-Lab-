@@ -33,6 +33,8 @@
 
 ## Phase 3: CI Authoring Quality Expansion
 
+**Status:** Planned - 2026-07-03
+
 **Goal:** Increase useful CI authoring throughput while preserving strict separation between raw exposure deficits and learner-facing authored lines.
 
 **Requirements:** CI-01, CI-02, CI-03, CI-04, CI-05
@@ -43,6 +45,12 @@
 2. Bootstrap-only and needs-more-known-vocabulary targets are documented and excluded from normal CI authoring packets.
 3. New authored lines pass slot, vocabulary, and naturalness validation before promotion.
 4. Coverage reports show deficits without weakening validation.
+
+**Execution Plans:**
+
+- `.planning/phases/03-ci-authoring-quality-expansion/03-01-PLAN.md`: Authorability Contract And Packet Provenance.
+- `.planning/phases/03-ci-authoring-quality-expansion/03-02-PLAN.md`: Naturalness Gate Expansion.
+- `.planning/phases/03-ci-authoring-quality-expansion/03-03-PLAN.md`: Coverage Deficit Reporting Without Forced Authoring.
 
 ## Phase 4: Curriculum, Islands, And Review Queues
 

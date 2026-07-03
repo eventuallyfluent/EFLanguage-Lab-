@@ -85,11 +85,11 @@
 | SRC-02 | Phase 2 | Complete |
 | SRC-03 | Phase 2 | Complete |
 | SRC-04 | Phase 2 | Complete |
-| CI-01 | Phase 3 | Pending |
-| CI-02 | Phase 3 | Pending |
-| CI-03 | Phase 3 | Pending |
-| CI-04 | Phase 3 | Pending |
-| CI-05 | Phase 3 | Pending |
+| CI-01 | Phase 3 | Planned |
+| CI-02 | Phase 3 | Planned |
+| CI-03 | Phase 3 | Planned |
+| CI-04 | Phase 3 | Planned |
+| CI-05 | Phase 3 | Planned |
 | CURR-01 | Phase 4 | Pending |
 | CURR-02 | Phase 4 | Pending |
 | CURR-03 | Phase 4 | Pending |
@@ -112,4 +112,4 @@
 
 ---
 *Requirements defined: 2026-07-03*
-*Last updated: 2026-07-03 after Phase 2 completion*
+*Last updated: 2026-07-03 after Phase 3 planning*

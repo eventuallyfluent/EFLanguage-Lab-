@@ -1,7 +1,7 @@
 # State: Eventually Fluent Mandarin
 
 **Updated:** 2026-07-03
-**Status:** Phase 2 complete; Phase 3 ready to plan
+**Status:** Phase 3 planned; ready to execute
 
 ## Project Reference
 
@@ -62,10 +62,13 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 
 **Open tasks:**
 
-- Plan Phase 3 into atomic execution plans.
-- Preserve authorable queue as the source for authoring packets.
-- Keep bootstrap-only and needs-more-known-vocabulary targets out of normal learner-facing authored CI packets.
-- Keep authored intake naturalness validation strict.
+Phase 3 has been planned into three atomic execution plans:
+
+- `03-01-PLAN.md`: Authorability Contract And Packet Provenance.
+- `03-02-PLAN.md`: Naturalness Gate Expansion.
+- `03-03-PLAN.md`: Coverage Deficit Reporting Without Forced Authoring.
+
+Remaining work is execution and verification.
 
 ## Key Decisions
 
@@ -74,6 +77,7 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - Naturalness gates are product-critical and should not be weakened to satisfy coverage math.
 - Learner-facing output must stay curated or explicitly validated.
 - SRS and quizzes must not replace the CI+1 sentence ladder as the primary loop.
+- Raw CI exposure deficits are not automatically authorable work; authoring packets must derive from the authorable queue.
 
 ## Known Concerns
 
@@ -100,7 +104,8 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - Completed `02-02`: Parser And Ranking Regression Hardening.
 - Completed `02-03`: Variant And Source Role Documentation.
 - Created `.planning/phases/02-source-path-hardening/02-VERIFICATION.md`.
+- Created Phase 3 research and execution plans under `.planning/phases/03-ci-authoring-quality-expansion/`.
 
 ## Next Action
 
-Run `$gsd-plan-phase 3` to create atomic plans for CI Authoring Quality Expansion.
+Run `$gsd-execute-phase 3` to execute the CI Authoring Quality Expansion plans.
