@@ -19,8 +19,8 @@ export function buildSourceListImportAudit(input: {
 }): SourceListImportAudit {
   const sourceLists: SourceListImportStatus[] = [
     statusForHsk(input.hsk30SourceEntries, input.lexicon),
-    statusForFixture("MOVIE_FREQUENCY", movieFrequencyRanks, input.lexicon, "Movie/spoken ranks are wired as fixture metadata until the real corpus list is imported."),
-    statusForFixture("BOOK_FREQUENCY", bookFrequencyRanks, input.lexicon, "Book/reading ranks are wired as fixture metadata until the real corpus list is imported."),
+    statusForFixture("MOVIE_FREQUENCY", movieFrequencyRanks, input.lexicon, "Legacy spoken-priority ranks are fixture metadata until the real movie/spoken corpus list is imported. They do not replace pan-Mandarin source ranking."),
+    statusForFixture("BOOK_FREQUENCY", bookFrequencyRanks, input.lexicon, "Legacy reading-priority ranks are fixture metadata until the real book/written corpus list is imported. They do not replace pan-Mandarin source ranking."),
     statusForFixture("BLCU_FREQUENCY", blcuFrequencyRanks, input.lexicon, "BLCU/Beijing ranks are supporting metadata, not a beginner permission source.")
   ];
 
@@ -49,7 +49,7 @@ function statusForHsk(hsk30SourceEntries: Hsk30SourceEntry[], lexicon: LexiconEn
     importedEntryCount: hsk30SourceEntries.length,
     rankedLexiconEntryCount: lexicon.filter((entry) => entry.sourceMemberships?.some((membership) => membership.source === "HSK_3_0")).length,
     permissionSource: true,
-    notes: "HSK 3.0 is the permission backbone for the 10k path."
+    notes: "HSK 3.0 is the file-backed learner coverage reference for the legacy HSK-backed path. The pan-Mandarin 10k path is ranked by corpus frequency and communication usefulness."
   };
 }
 

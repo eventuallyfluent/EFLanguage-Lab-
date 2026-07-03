@@ -88,6 +88,12 @@ test("source-list import audit distinguishes real HSK source from movie and book
   assert.equal((bySource.get("HSK_3_0")?.importedEntryCount ?? 0) >= 10000, true);
   assert.equal(bySource.get("MOVIE_FREQUENCY")?.importMode, "fixture");
   assert.equal(bySource.get("BOOK_FREQUENCY")?.importMode, "fixture");
+  assert.equal(bySource.get("MOVIE_FREQUENCY")?.permissionSource, false);
+  assert.equal(bySource.get("BOOK_FREQUENCY")?.permissionSource, false);
+  assert.equal(bySource.get("HSK_3_0")?.notes.includes("legacy HSK-backed path"), true);
+  assert.equal(bySource.get("HSK_3_0")?.notes.includes("pan-Mandarin 10k path is ranked by corpus frequency"), true);
+  assert.equal(bySource.get("MOVIE_FREQUENCY")?.notes.includes("fixture metadata"), true);
+  assert.equal(bySource.get("BOOK_FREQUENCY")?.notes.includes("fixture metadata"), true);
   assert.equal(audit.warnings.some((warning) => warning.includes("MOVIE_FREQUENCY")), true);
   assert.equal(audit.warnings.some((warning) => warning.includes("BOOK_FREQUENCY")), true);
 });
@@ -103,6 +109,12 @@ test("pan-Mandarin source audit records corpus availability without changing the
   assert.equal(bySource.get("SUBTLEX_CH")?.role, "subtitle-frequency");
   assert.equal(bySource.get("TBCL_TOCFL_REFERENCE")?.role, "learner-coverage-reference");
   assert.equal(bySource.get("MANUAL_USEFULNESS")?.importMode, "manual");
+  assert.equal(bySource.get("HSK_3_0_REFERENCE")?.notes.includes("does not control the pan-Mandarin ranking foundation"), true);
+  assert.equal(bySource.get("TBCL_TOCFL_REFERENCE")?.notes.includes("does not control the pan-Mandarin ranking foundation"), true);
+  assert.equal(bySource.get("SPOKEN_CORPUS")?.importMode, "missing");
+  assert.equal(bySource.get("BALANCED_WRITTEN")?.importMode, "missing");
+  assert.equal(audit.warnings.some((warning) => warning.includes("SPOKEN_CORPUS")), true);
+  assert.equal(audit.warnings.some((warning) => warning.includes("BALANCED_WRITTEN")), true);
   assert.equal(
     audit.warnings.some((warning) => warning.includes("TUBELEX_CHINESE")),
     bySource.get("TUBELEX_CHINESE")?.importMode === "missing" || bySource.get("TUBELEX_CHINESE")?.parserStatus === "planned"

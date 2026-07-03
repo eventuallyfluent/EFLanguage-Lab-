@@ -1,7 +1,7 @@
 {
   "name": "eventually-fluent-mandarin",
   "version": "0.1.0",
-  "description": "Local-first Mandarin acquisition engine MVP using controlled HSK 3.0 vocabulary.",
+  "description": "Local-first Mandarin acquisition engine for a source-backed 10k CI+1 pan-Mandarin path.",
   "private": true,
   "scripts": {
     "build": "tsc",

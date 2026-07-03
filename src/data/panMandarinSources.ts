@@ -54,7 +54,7 @@ export const panMandarinSourceRegistry: PanMandarinSourceDefinition[] = [
     expectedPaths: ["source-lists/hsk30.csv"],
     licenseNote: "Existing project source list; used as learner coverage and proficiency reference.",
     parserStatus: "implemented",
-    notes: "Coverage reference only. It no longer controls the pan-Mandarin ranking foundation."
+    notes: "Coverage reference only. It does not control the pan-Mandarin ranking foundation."
   },
   {
     id: "TBCL_TOCFL_REFERENCE",
@@ -65,7 +65,7 @@ export const panMandarinSourceRegistry: PanMandarinSourceDefinition[] = [
     canonicalUrl: "https://github.com/tomcumming/tocfl-word-list",
     licenseNote: "Prefer official TBCL/TOCFL files; derived CSV generator is Unlicense but still preserve source provenance.",
     parserStatus: "implemented",
-    notes: "Taiwan learner coverage and regional reference."
+    notes: "Taiwan learner coverage and regional reference only. It does not control the pan-Mandarin ranking foundation."
   },
   {
     id: "LANCASTER_WRITTEN",
