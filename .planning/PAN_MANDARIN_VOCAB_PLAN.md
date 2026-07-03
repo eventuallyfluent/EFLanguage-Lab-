@@ -87,6 +87,23 @@ interface PanMandarinVariant {
 
 Traditional support should be included when the source provides it or when conversion is straightforward. It should not become a separate conversion project before the ranked source list exists.
 
+## Variant Invariants
+
+Future source-path work must preserve these boundaries:
+
+- `conceptId` identifies the learner concept, not a specific regional spelling.
+- `variants[].simplified` is the emitted simplified form when a simplified form is known.
+- `variants[].traditional` stores the traditional form when the source provides one or when a safe HSK/TBCL pairing exists.
+- `variants[].region` describes where the variant is preferred or whether it is shared/universal.
+- `variants[].pronunciationRegion` must remain separate from script form; script conversion alone does not prove pronunciation.
+- `variants[].sourceRefs` lists the source families that support that variant.
+- `variants[].exampleStatus` stays `missing` until a source-backed or reviewed example exists.
+- `sourceMemberships[].region` describes the source membership signal, not the same thing as the variant preference.
+
+Do not merge Mainland and Taiwan forms into one fake neutral word. If a regional pair is obvious and reviewed, group it under one concept with separate variants. If the pairing is uncertain, keep the entry separate and mark it for review rather than forcing a merge.
+
+Current implementation note: the first stable pass stores one primary variant per concept. This is acceptable for Phase 2 hardening as long as the fields above remain explicit and tests prove shared simplified/traditional metadata and Taiwan-reference metadata survive export.
+
 ## Ranking
 
 Use multiple ranks instead of one fake neutral rank:
@@ -165,3 +182,4 @@ Optional later public app outputs:
 - Which genuine spoken corpus is accessible enough for v1.
 - Whether TOCFL should come from an official file, a derived CSV, or both with provenance.
 - Whether regional pair mapping starts as a small reviewed seed list or waits until after raw ranking export.
+- Whether future manually reviewed regional pairs should live in `source-lists/manual-usefulness.json` or a dedicated regional-pairs file.

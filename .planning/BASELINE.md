@@ -66,6 +66,13 @@ Pan-Mandarin source modes:
 - `SPOKEN_CORPUS` is missing.
 - `BALANCED_WRITTEN` is missing.
 
+## Variant Baseline
+
+- The pan-Mandarin concept model currently exports one primary variant per concept.
+- Shared HSK/TBCL concepts can preserve simplified and traditional forms, such as `我们` / `我們`.
+- Taiwan-reference-only concepts can preserve `region: "taiwan"` and `pronunciationRegion: "standard-taiwan"` when no HSK simplified pairing is available.
+- Future work must not collapse regional/script variants into one fake universal word.
+
 ## Next Route
 
 Phase 1 setup and verification are complete. Next GSD action is to plan Phase 2: Source Path Hardening.

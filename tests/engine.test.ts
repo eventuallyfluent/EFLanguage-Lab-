@@ -182,6 +182,27 @@ test("pan-Mandarin vocabulary ranking is deterministic and keeps representative 
   assert.equal(women.variants[0].pronunciationRegion, "shared");
 });
 
+test("pan-Mandarin variants preserve script region and source-reference boundaries", () => {
+  const vocab = buildPanMandarinVocab();
+  const shared = vocab.find((entry) => entry.conceptId === "cmn-6211-4eec");
+  assert.ok(shared);
+  assert.equal(shared.variants[0].region, "universal");
+  assert.equal(shared.variants[0].simplified, "我们");
+  assert.equal(shared.variants[0].traditional, "我們");
+  assert.equal(shared.variants[0].sourceRefs.includes("HSK_3_0_REFERENCE"), true);
+  assert.equal(shared.variants[0].sourceRefs.includes("TBCL_TOCFL_REFERENCE"), true);
+  assert.equal(shared.sourceMemberships.some((membership) => membership.source === "HSK_3_0_REFERENCE" && membership.region === "mainland"), true);
+  assert.equal(shared.sourceMemberships.some((membership) => membership.source === "TBCL_TOCFL_REFERENCE" && membership.region === "taiwan"), true);
+
+  const taiwanReference = vocab.find((entry) => entry.conceptId === "cmn-6709-4e9b");
+  assert.ok(taiwanReference);
+  assert.equal(taiwanReference.category, "taiwan-preferred");
+  assert.equal(taiwanReference.variants[0].region, "taiwan");
+  assert.equal(taiwanReference.variants[0].pronunciationRegion, "standard-taiwan");
+  assert.equal(taiwanReference.variants[0].sourceRefs.includes("TBCL_TOCFL_REFERENCE"), true);
+  assert.equal(taiwanReference.sourceMemberships.some((membership) => membership.source === "TBCL_TOCFL_REFERENCE" && membership.region === "taiwan"), true);
+});
+
 test("pan-Mandarin CI candidates are review-only and keep bootstrap separate from CI+1", () => {
   const vocab = buildPanMandarinVocab();
   const candidates = buildPanMandarinCiCandidates(vocab);
