@@ -1,14 +1,14 @@
 # State: Eventually Fluent Mandarin
 
 **Updated:** 2026-07-03
-**Status:** Phase 1 complete; Phase 2 ready to plan
+**Status:** Phase 1 complete; Phase 2 planned and ready to execute
 
 ## Project Reference
 
 See: `.planning/PROJECT.md` (updated 2026-07-03)
 
 **Core value:** The engine must produce a natural, source-backed 10k CI+1 Mandarin sentence ladder that can carry acquisition; every other surface supports that ladder.
-**Current focus:** Phase 2 - Source Path Hardening
+**Current focus:** Execute Phase 2 - Source Path Hardening
 
 ## Current Position
 
@@ -37,9 +37,14 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 
 **Goal:** Keep the 10k vocabulary path honest, source-backed, and resilient as pan-Mandarin ranking and parser work continues.
 
-**Open tasks:**
+**Plans:**
 
-- Plan Phase 2 into 2-3 atomic execution plans.
+- `02-01-PLAN.md`: Source Audit Contract Cleanup.
+- `02-02-PLAN.md`: Parser And Ranking Regression Hardening.
+- `02-03-PLAN.md`: Variant And Source Role Documentation.
+
+**Open tasks for execution:**
+
 - Use `.planning/PAN_MANDARIN_VOCAB_PLAN.md` as relevant context.
 - Preserve source-mode honesty for missing and fixture-backed source families.
 - Keep parser/ranking changes test-covered.
@@ -72,7 +77,8 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - Created `.planning/BASELINE.md`.
 - Verified `npm.cmd test`.
 - Verified `npm.cmd run web:build`.
+- Created Phase 2 research and execution plans under `.planning/phases/02-source-path-hardening/`.
 
 ## Next Action
 
-Run `$gsd-plan-phase 2` to create atomic plans for Source Path Hardening.
+Run `$gsd-execute-phase 2` to execute Source Path Hardening.

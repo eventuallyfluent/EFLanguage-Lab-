@@ -81,10 +81,10 @@
 | BASE-02 | Phase 1 | Complete |
 | BASE-03 | Phase 1 | Complete |
 | BASE-04 | Phase 1 | Complete |
-| SRC-01 | Phase 2 | Pending |
-| SRC-02 | Phase 2 | Pending |
-| SRC-03 | Phase 2 | Pending |
-| SRC-04 | Phase 2 | Pending |
+| SRC-01 | Phase 2 | Planned |
+| SRC-02 | Phase 2 | Planned |
+| SRC-03 | Phase 2 | Planned |
+| SRC-04 | Phase 2 | Planned |
 | CI-01 | Phase 3 | Pending |
 | CI-02 | Phase 3 | Pending |
 | CI-03 | Phase 3 | Pending |
@@ -112,4 +112,4 @@
 
 ---
 *Requirements defined: 2026-07-03*
-*Last updated: 2026-07-03 after Phase 1 baseline verification*
+*Last updated: 2026-07-03 after Phase 2 planning*
