@@ -543,12 +543,23 @@ export interface CiCoverageStageReport {
   totalExposureDeficit: number;
 }
 
+export interface CiAuthorabilityDeficitSummary {
+  targetCount: number;
+  totalExposureDeficit: number;
+}
+
 export interface CiCoverageReport {
   targetVocabularyCount: 10000;
   targetCount: number;
   targetsWithCuratedSeed: number;
   targetsNeedingCuration: number;
   totalExposureDeficit: number;
+  authorabilitySummary: {
+    ready: CiAuthorabilityDeficitSummary;
+    bootstrapOnly: CiAuthorabilityDeficitSummary;
+    needsMoreKnownVocabulary: CiAuthorabilityDeficitSummary;
+    nonAuthorable: CiAuthorabilityDeficitSummary;
+  };
   stages: CiCoverageStageReport[];
 }
 

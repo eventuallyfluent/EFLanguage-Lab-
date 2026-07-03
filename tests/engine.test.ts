@@ -386,6 +386,12 @@ test("CI coverage report tracks stage deficits across the full ladder", () => {
   assert.equal(report.targetCount, 10000);
   assert.equal(report.targetsNeedingCuration > 9000, true);
   assert.equal(report.totalExposureDeficit > 90000, true);
+  assert.equal(report.authorabilitySummary.ready.targetCount > 9000, true);
+  assert.equal(report.authorabilitySummary.bootstrapOnly.targetCount > 0, true);
+  assert.equal(report.authorabilitySummary.needsMoreKnownVocabulary.targetCount > 0, true);
+  assert.equal(report.authorabilitySummary.nonAuthorable.targetCount > 0, true);
+  assert.equal(report.authorabilitySummary.ready.targetCount + report.authorabilitySummary.nonAuthorable.targetCount, report.targetsNeedingCuration);
+  assert.equal(report.authorabilitySummary.ready.totalExposureDeficit + report.authorabilitySummary.nonAuthorable.totalExposureDeficit, report.totalExposureDeficit);
   assert.equal(report.stages.some((stage) => stage.stageId === "ci-0001-0100" && stage.targetCount === 100), true);
 });
 
@@ -673,6 +679,7 @@ test("CI pipeline contract clarifies each engine step in order", () => {
   ]);
   assert.equal(contract.steps.every((step, index) => step.order === index + 1), true);
   assert.equal(contract.steps.find((step) => step.id === "acquisition-path")?.currentCount, 10000);
+  assert.equal(contract.steps.find((step) => step.id === "ci-targets")?.gate.includes("authorability-aware deficit reporting"), true);
   assert.equal(contract.steps.find((step) => step.id === "curation-queue")?.gate.includes("authorable queue keeps only ready items"), true);
   assert.equal(contract.steps.find((step) => step.id === "authoring-packets")?.inputs.includes("output/ci-authorable-curation-queue.json"), true);
   assert.equal(contract.steps.find((step) => step.id === "authoring-packets")?.gate.includes("ready authorable queue item"), true);

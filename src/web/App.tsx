@@ -236,6 +236,12 @@ interface CiCoverageReport {
   targetsWithCuratedSeed: number;
   targetsNeedingCuration: number;
   totalExposureDeficit: number;
+  authorabilitySummary: {
+    ready: { targetCount: number; totalExposureDeficit: number };
+    bootstrapOnly: { targetCount: number; totalExposureDeficit: number };
+    needsMoreKnownVocabulary: { targetCount: number; totalExposureDeficit: number };
+    nonAuthorable: { targetCount: number; totalExposureDeficit: number };
+  };
 }
 
 interface CiCurationQueueItem {
@@ -792,6 +798,7 @@ function EngineOverview({ data, knownWordCount }: { data: AppData; knownWordCoun
         <Metric label="Need curation" value={data.ciCoverageReport.targetsNeedingCuration.toLocaleString()} />
         <Metric label="Authorable now" value={data.authorableCiCurationQueue.length.toLocaleString()} />
         <Metric label="Exposure deficit" value={data.ciCoverageReport.totalExposureDeficit.toLocaleString()} />
+        <Metric label="Ready deficit" value={data.ciCoverageReport.authorabilitySummary.ready.totalExposureDeficit.toLocaleString()} />
       </div>
 
       <div className="engine-grid">

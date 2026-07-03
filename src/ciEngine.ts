@@ -175,8 +175,34 @@ export function buildCiCoverageReport(targets: CiSentenceTarget[]): CiCoverageRe
     targetsWithCuratedSeed: targets.filter((target) => target.currentCuratedExposures > 0).length,
     targetsNeedingCuration: targets.filter((target) => target.currentCuratedExposures < target.targetExposureCount).length,
     totalExposureDeficit: stages.reduce((sum, stage) => sum + stage.totalExposureDeficit, 0),
+    authorabilitySummary: buildAuthorabilitySummary(targets),
     stages
   };
+}
+
+function buildAuthorabilitySummary(targets: CiSentenceTarget[]): CiCoverageReport["authorabilitySummary"] {
+  const empty = (): { targetCount: number; totalExposureDeficit: number } => ({ targetCount: 0, totalExposureDeficit: 0 });
+  const summary = {
+    ready: empty(),
+    bootstrapOnly: empty(),
+    needsMoreKnownVocabulary: empty(),
+    nonAuthorable: empty()
+  };
+
+  for (const target of targets) {
+    const exposureDeficit = Math.max(0, target.targetExposureCount - target.currentCuratedExposures);
+    if (exposureDeficit === 0) continue;
+    const authorability = authorabilityFor(target).status;
+    const bucket = authorability === "bootstrap-only" ? summary.bootstrapOnly : authorability === "needs-more-known-vocabulary" ? summary.needsMoreKnownVocabulary : summary.ready;
+    bucket.targetCount += 1;
+    bucket.totalExposureDeficit += exposureDeficit;
+    if (authorability !== "ready") {
+      summary.nonAuthorable.targetCount += 1;
+      summary.nonAuthorable.totalExposureDeficit += exposureDeficit;
+    }
+  }
+
+  return summary;
 }
 
 export function buildCiCurationBatches(queue: CiCurationQueueItem[], path: AcquisitionVocabPath, batchSize = 25, maxBatches = 4): CiCurationBatch[] {

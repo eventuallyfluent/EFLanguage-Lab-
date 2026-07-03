@@ -61,7 +61,7 @@ export function buildCiPipelineContract(input: {
         purpose: "Turn each path word into repeated exposure requirements with known-word thresholds.",
         inputs: ["output/acquisition-vocab-path.json", "output/sentence-stream.json"],
         outputs: ["output/ci-sentence-targets.json", "output/ci-coverage-report.json"],
-        gate: "Every path word receives target exposure counts and CI coverage requirements.",
+        gate: "Every path word receives target exposure counts, CI coverage requirements, and authorability-aware deficit reporting.",
         currentCount: input.ciSentenceTargets.length,
         status: input.ciSentenceTargets.length === input.acquisitionVocabPath.currentCandidateCount ? "implemented" : "partial"
       },
