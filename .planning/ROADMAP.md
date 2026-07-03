@@ -56,7 +56,7 @@
 
 ## Phase 4: Curriculum, Islands, And Review Queues
 
-**Status:** Planned - 2026-07-03
+**Status:** In Progress - 1/4 plans complete
 
 **Goal:** Strengthen staged learner-facing content and review-only content flows without letting raw generated content bypass curation.
 
@@ -75,6 +75,10 @@
 - `.planning/phases/04-curriculum-islands-and-review-queues/04-02-PLAN.md`: Reading And Tier Policy Regression Gates.
 - `.planning/phases/04-curriculum-islands-and-review-queues/04-03-PLAN.md`: Pan-Mandarin Review Queue Metadata.
 - `.planning/phases/04-curriculum-islands-and-review-queues/04-04-PLAN.md`: Curriculum Output Contract And Web Data Alignment.
+
+**Completed Plans:**
+
+- `.planning/phases/04-curriculum-islands-and-review-queues/04-01-SUMMARY.md`: Learner-Facing Curriculum Boundary Hardening.
 
 ## Phase 5: Shadowing And SRS Support
 
