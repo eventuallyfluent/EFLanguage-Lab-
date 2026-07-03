@@ -128,7 +128,7 @@ function naturalnessIssues(sentence: AuthoredCiSentence, slotMode: "bootstrap-se
   if (/(^我$|^好$|^是我$|^我有$|^我在$|^他来$|^他说$|^你说$|^我想$|^我要$|^他来看$|^我们来$)/.test(text)) {
     issues.push("Authored CI sentence is a known weak fragment or unnatural early line.");
   }
-  if (/^(Me\.|Okay\.|I have some\.|I want to\.|I want it\.|He says it\.|You say it\.|He is coming to look\.)$/.test(english)) {
+  if (/^(Me\.|Okay\.|I am there\.|He comes\.|I have some\.|I want to\.|I want it\.|He says it\.|You say it\.|He is coming to look\.)$/.test(english)) {
     issues.push("English rendering indicates the Mandarin line is too vague or fragment-like.");
   }
 

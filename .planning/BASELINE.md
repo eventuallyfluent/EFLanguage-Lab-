@@ -79,8 +79,9 @@ Pan-Mandarin source modes:
 - Authorable CI curation queue contains only `authorability: "ready"` items.
 - CI curation batches and authoring packets must be built from the authorable queue; batch construction rejects `bootstrap-only` and `needs-more-known-vocabulary` items.
 - Current first authorable target starts at word index 25.
-- Current counts after Phase 3 plan 03-01 verification: raw queue 500, authorable queue 476, authoring packets 4, packet slots 976, accepted authored CI sentences 24, rejected authored CI sentences 0.
+- Current counts after Phase 3 plan 03-02 verification: raw queue 500, authorable queue 476, authoring packets 4, packet slots 976, accepted authored CI sentences 24, rejected authored CI sentences 0.
+- Authored CI naturalness regression coverage includes weak fragment renderings, vague English renderings, and promotion failure for naturalness-invalid authored lines.
 
 ## Next Route
 
-Phase 3 is in execution. Next GSD action is to continue with plan 03-02: Naturalness Gate Expansion.
+Phase 3 is in execution. Next GSD action is to continue with plan 03-03: Coverage Deficit Reporting Without Forced Authoring.

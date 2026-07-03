@@ -488,7 +488,7 @@ test("authored CI intake accepts only slot-valid CI+1 sentences", () => {
     simplified: "我不在",
     pinyin: "wǒ bù zài",
     english: "I am not here.",
-    vocabularyIds: ["wo", slot.requiredNewWordId, "zai"],
+    vocabularyIds: ["wo", "you", slot.requiredNewWordId],
     reviewStatus: "authored" as const
   };
 
@@ -544,6 +544,79 @@ test("authored CI naturalness gate rejects fragment-like slot-valid lines", () =
   assert.equal(report.acceptedCount, 0);
   assert.equal(report.rejectedCount, 1);
   assert.equal(report.issues.some((item) => item.message.includes("too short") || item.message.includes("weak fragment")), true);
+});
+
+test("authored CI naturalness gate rejects known weak early patterns even when slot-valid", () => {
+  const path = buildAcquisitionVocabPath(lexicon, loadHsk30SourceEntries());
+  const stream = buildSentenceStream([...generateSentencesForKnownWordCount(1000), ...generateLockedSentences()], path);
+  const targets = buildCiSentenceTargets(path, stream);
+  const queue = buildCiCurationQueue(targets, 25);
+  const authorable = buildAuthorableCiCurationQueue(queue, 25);
+  const batches = buildCiCurationBatches(authorable, path, 5, 1);
+  const packets = buildCompactCiAuthoringPackets(batches, path);
+  const packet = packets[0];
+  const item = packet.items[0];
+  const slot = item.sentenceSlots[0];
+  const cases = [
+    ["æˆ‘åœ¨", "I am there."],
+    ["ä»–æ¥", "He comes."],
+    ["ä½ è¯´", "You say it."],
+    ["æˆ‘æƒ³", "I want to."]
+  ];
+
+  for (const [simplified, english] of cases) {
+    const report = validateAuthoredCiSentences([
+      {
+        id: `authored-weak-${simplified}`,
+        packetId: packet.id,
+        sourceBatchId: packet.sourceBatchId,
+        slotId: slot.id,
+        targetId: item.targetId,
+        requiredNewWordId: slot.requiredNewWordId,
+        simplified,
+        pinyin: "slot-valid weak fragment",
+        english,
+        vocabularyIds: ["wo", "you", slot.requiredNewWordId],
+        reviewStatus: "authored" as const
+      }
+    ], packets);
+
+    assert.equal(report.acceptedCount, 0, simplified);
+    assert.equal(report.rejectedCount, 1, simplified);
+    assert.equal(report.issues.some((issue) => issue.message.includes("weak fragment") || issue.message.includes("vague")), true, simplified);
+  }
+});
+
+test("authored CI naturalness gate rejects vague English renderings for otherwise slot-valid lines", () => {
+  const path = buildAcquisitionVocabPath(lexicon, loadHsk30SourceEntries());
+  const stream = buildSentenceStream([...generateSentencesForKnownWordCount(1000), ...generateLockedSentences()], path);
+  const targets = buildCiSentenceTargets(path, stream);
+  const queue = buildCiCurationQueue(targets, 25);
+  const authorable = buildAuthorableCiCurationQueue(queue, 25);
+  const batches = buildCiCurationBatches(authorable, path, 5, 1);
+  const packets = buildCompactCiAuthoringPackets(batches, path);
+  const packet = packets[0];
+  const item = packet.items[0];
+  const slot = item.sentenceSlots[0];
+  const vague = {
+    id: "authored-vague-001",
+    packetId: packet.id,
+    sourceBatchId: packet.sourceBatchId,
+    slotId: slot.id,
+    targetId: item.targetId,
+    requiredNewWordId: slot.requiredNewWordId,
+    simplified: "æˆ‘æœ‰é’±",
+    pinyin: "wÇ’ yÇ’u qiÃ¡n",
+    english: "I have some.",
+    vocabularyIds: ["wo", "you", slot.requiredNewWordId],
+    reviewStatus: "authored" as const
+  };
+
+  const report = validateAuthoredCiSentences([vague], packets);
+  assert.equal(report.acceptedCount, 0);
+  assert.equal(report.rejectedCount, 1);
+  assert.equal(report.issues.some((issue) => issue.message.includes("vague") || issue.message.includes("fragment-like")), true);
+  assert.throws(() => promoteAuthoredCiSentencesToStream([vague], packets, path), /Cannot promote invalid authored CI sentences/);
 });
 
 test("authored CI sentence intake is file-backed and schema checked", () => {
