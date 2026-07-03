@@ -588,9 +588,13 @@ export function buildPanMandarinContentReviewQueue(
       id: `review-${line.id}`,
       itemType: "story-line",
       sourceId: line.id,
+      sourceItemId: line.id,
+      sourceItemType: "premade-story-line",
       islandId: story.islandId,
       storyId: story.id,
       unlockAtWordCount: story.unlockAtWordCount,
+      maxAllowedCommunicationPathRank: story.maxAllowedCommunicationPathRank,
+      knownCoverageTarget: story.knownCoverageTarget,
       simplified: line.simplified,
       pinyin: line.pinyin,
       english: line.english,
@@ -604,6 +608,8 @@ export function buildPanMandarinContentReviewQueue(
       scenePurpose: line.scenePurpose,
       reviewStatus: "review-only",
       reviewDisposition: "needs-human-review",
+      suggestedCurationAction: line.overrideConceptIds.length > 0 ? "rewrite-before-promotion" : "review-naturalness-and-promote",
+      blockingReasons: line.overrideReasons,
       reviewReasons: reviewReasonsForStoryLine(line, index)
     }))
   );
@@ -797,8 +803,12 @@ function islandReviewItem(
     id: `review-${island.sourceIslandId}-${itemType}-${String(index + 1).padStart(2, "0")}`,
     itemType,
     sourceId: island.id,
+    sourceItemId: island.id,
+    sourceItemType: "premade-island",
     islandId: island.sourceIslandId,
     unlockAtWordCount: island.unlockAtWordCount,
+    maxAllowedCommunicationPathRank: Math.max(0, island.unlockAtWordCount - 1),
+    knownCoverageTarget: [0.95, 0.98],
     simplified: text,
     islandTags: island.themeTags,
     grammarPointIds: [],
@@ -807,6 +817,8 @@ function islandReviewItem(
     overrideReasons: [],
     reviewStatus: "review-only",
     reviewDisposition: "needs-human-review",
+    suggestedCurationAction: itemType === "island-scenario-prompt" ? "convert-scenario-to-controlled-lines" : "review-naturalness-and-promote",
+    blockingReasons: itemType === "island-scenario-prompt" ? ["scenario prompt is not a controlled learner-facing Mandarin line"] : [],
     reviewReasons: [
       "island pack item is review-only and must be checked for natural spoken usefulness before learner-facing promotion",
       itemType === "island-scenario-prompt" ? "scenario prompt needs conversion into controlled Mandarin before use as input" : "phrase/dialogue item needs human naturalness review"

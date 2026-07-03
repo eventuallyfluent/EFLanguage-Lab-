@@ -101,3 +101,4 @@ Phase 4 plan set:
 - `pack-300-transit-light` no longer reuses active 100-tier sentence `curated-050`; it uses transport/location sentence `curated-081` instead.
 - Curriculum validation now rejects readings outside 95-98% known coverage, readings with no controlled new word, reading lines with more than two new words, and hidden forbidden themes on sentences, dialogues, or readings.
 - Pre-2000 packs no longer use work/health-tagged source sentences through benign pack tags.
+- Pan-Mandarin content review queue items now include normalized source item metadata, max allowed communication rank, coverage target, suggested curation action, and blocking reasons.

@@ -316,6 +316,13 @@ test("pan-Mandarin language islands and story queues stay gated and review-only"
   assert.equal(reviewQueue.every((item) => item.reviewStatus === "review-only" && item.reviewDisposition === "needs-human-review"), true);
   assert.equal(reviewQueue.every((item) => fillerFragments.every((fragment) => !item.simplified.includes(fragment))), true);
   assert.equal(reviewQueue.filter((item) => item.itemType === "story-line").every((item) => item.episodeBeat && item.scenePurpose && item.islandTags.length > 0), true);
+  assert.equal(reviewQueue.every((item) => item.sourceItemId === item.sourceId && item.sourceItemType.length > 0), true);
+  assert.equal(reviewQueue.every((item) => item.maxAllowedCommunicationPathRank > 0 && item.maxAllowedCommunicationPathRank <= 10000), true);
+  assert.equal(reviewQueue.every((item) => item.knownCoverageTarget[0] >= 0.95 && item.knownCoverageTarget[1] <= 0.98), true);
+  assert.equal(reviewQueue.every((item) => item.suggestedCurationAction.length > 0 && Array.isArray(item.blockingReasons) && item.reviewReasons.length > 0), true);
+  assert.equal(reviewQueue.filter((item) => item.itemType === "island-scenario-prompt").every((item) => item.suggestedCurationAction === "convert-scenario-to-controlled-lines" && item.blockingReasons.length > 0), true);
+  const learnerFacingSentenceIds = new Set(generateSentencesForKnownWordCount(1000).map((sentence) => sentence.id));
+  assert.equal(reviewQueue.every((item) => !learnerFacingSentenceIds.has(item.id) && !learnerFacingSentenceIds.has(item.sourceItemId)), true);
 });
 
 test("sentence stream is curated CI material derived from path vocabulary", () => {

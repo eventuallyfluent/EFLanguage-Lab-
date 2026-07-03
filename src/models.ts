@@ -1015,15 +1015,21 @@ export interface PanMandarinContentCoverageReport {
 }
 
 export type PanMandarinContentReviewItemType = "story-line" | "island-phrase" | "island-dialogue-line" | "island-scenario-prompt";
+export type PanMandarinContentReviewSourceItemType = "premade-story-line" | "premade-island";
 export type PanMandarinContentReviewDisposition = "needs-human-review";
+export type PanMandarinContentSuggestedCurationAction = "review-naturalness-and-promote" | "rewrite-before-promotion" | "convert-scenario-to-controlled-lines";
 
 export interface PanMandarinContentReviewQueueItem {
   id: string;
   itemType: PanMandarinContentReviewItemType;
   sourceId: string;
+  sourceItemId: string;
+  sourceItemType: PanMandarinContentReviewSourceItemType;
   islandId: string;
   storyId?: string;
   unlockAtWordCount: number;
+  maxAllowedCommunicationPathRank: number;
+  knownCoverageTarget: [number, number];
   simplified: string;
   pinyin?: string;
   english?: string;
@@ -1037,6 +1043,8 @@ export interface PanMandarinContentReviewQueueItem {
   scenePurpose?: string;
   reviewStatus: PanMandarinContentReviewStatus;
   reviewDisposition: PanMandarinContentReviewDisposition;
+  suggestedCurationAction: PanMandarinContentSuggestedCurationAction;
+  blockingReasons: string[];
   reviewReasons: string[];
 }
 
