@@ -3,18 +3,18 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-last_updated: "2026-07-03T13:20:00.000Z"
+last_updated: "2026-07-03T14:00:00.000Z"
 progress:
   total_phases: 6
   completed_phases: 3
   total_plans: 10
-  completed_plans: 7
+  completed_plans: 8
 ---
 
 # State: Eventually Fluent Mandarin
 
 **Updated:** 2026-07-03
-**Status:** Phase 4 in progress; 04-01 complete
+**Status:** Phase 4 in progress; 04-01 and 04-02 complete
 
 ## Project Reference
 
@@ -112,6 +112,7 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 **Completed:**
 
 - `04-01`: Added full-generation boundary tests and fixed duplicate active/locked sentence mapping in `pack-300-transit-light`.
+- `04-02`: Added reading math and early-tier theme regression gates; removed masked work/health source lines from pre-2000 packs.
 
 ## Key Decisions
 
@@ -154,7 +155,8 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - Created `.planning/phases/03-ci-authoring-quality-expansion/03-VERIFICATION.md`.
 - Created Phase 4 research and execution plans under `.planning/phases/04-curriculum-islands-and-review-queues/`.
 - Completed `04-01`: Learner-Facing Curriculum Boundary Hardening.
+- Completed `04-02`: Reading And Tier Policy Regression Gates.
 
 ## Next Action
 
-Continue `$gsd-execute-phase 4` with `04-02`: Reading And Tier Policy Regression Gates.
+Continue `$gsd-execute-phase 4` with `04-03`: Pan-Mandarin Review Queue Metadata.
