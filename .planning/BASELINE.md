@@ -73,6 +73,14 @@ Pan-Mandarin source modes:
 - Taiwan-reference-only concepts can preserve `region: "taiwan"` and `pronunciationRegion: "standard-taiwan"` when no HSK simplified pairing is available.
 - Future work must not collapse regional/script variants into one fake universal word.
 
+## CI Authoring Baseline
+
+- Raw CI curation queue is deficit accounting, not a normal authoring source.
+- Authorable CI curation queue contains only `authorability: "ready"` items.
+- CI curation batches and authoring packets must be built from the authorable queue; batch construction rejects `bootstrap-only` and `needs-more-known-vocabulary` items.
+- Current first authorable target starts at word index 25.
+- Current counts after Phase 3 plan 03-01 verification: raw queue 500, authorable queue 476, authoring packets 4, packet slots 976, accepted authored CI sentences 24, rejected authored CI sentences 0.
+
 ## Next Route
 
-Phase 1 setup and verification are complete. Next GSD action is to plan Phase 2: Source Path Hardening.
+Phase 3 is in execution. Next GSD action is to continue with plan 03-02: Naturalness Gate Expansion.

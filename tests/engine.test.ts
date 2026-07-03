@@ -372,6 +372,7 @@ test("authorable CI queue skips early fragment-pressure targets", () => {
   const queue = buildCiCurationQueue(targets, 100);
   const authorable = buildAuthorableCiCurationQueue(queue, 100);
   assert.equal(authorable.length > 0, true);
+  assert.equal(queue.some((item) => item.authorability !== "ready"), true);
   assert.equal(authorable.every((item) => item.authorability === "ready"), true);
   assert.equal(authorable.every((item) => item.wordIndex >= 25), true);
 });
@@ -393,10 +394,13 @@ test("CI curation batches turn the queue into concrete sentence-slot work packet
   const stream = buildSentenceStream([...generateSentencesForKnownWordCount(1000), ...generateLockedSentences()], path);
   const targets = buildCiSentenceTargets(path, stream);
   const queue = buildCiCurationQueue(targets, 500);
-  const batches = buildCiCurationBatches(queue, path);
+  const authorable = buildAuthorableCiCurationQueue(queue, 500);
+  assert.throws(() => buildCiCurationBatches(queue, path), /authorable queue/);
+  const batches = buildCiCurationBatches(authorable, path);
   assert.equal(batches.length, 4);
   assert.equal(batches.every((batch) => batch.targetCount === 25), true);
   assert.equal(batches.every((batch) => batch.sentenceSlotCount > 0), true);
+  assert.equal(batches.every((batch) => batch.items.every((item) => item.wordIndex >= 25)), true);
   assert.equal(batches.every((batch) => batch.items.every((item) => item.sentenceSlots.every((slot) => slot.requiredNewWordId === item.vocabularyId))), true);
   assert.equal(batches.every((batch) => batch.items.every((item) => item.allowedKnownVocabularyIds.length <= 100)), true);
   assert.equal(batches.every((batch) => batch.items.every((item) => item.sentenceSlots.every((slot) => slot.maxOtherNewItems === 0))), true);
@@ -407,11 +411,13 @@ test("CI authoring packets enrich curation batches with word metadata and accept
   const stream = buildSentenceStream([...generateSentencesForKnownWordCount(1000), ...generateLockedSentences()], path);
   const targets = buildCiSentenceTargets(path, stream);
   const queue = buildCiCurationQueue(targets, 500);
-  const batches = buildCiCurationBatches(queue, path);
+  const authorable = buildAuthorableCiCurationQueue(queue, 500);
+  const batches = buildCiCurationBatches(authorable, path);
   const packets = buildCiAuthoringPackets(batches, path);
   assert.equal(packets.length, batches.length);
   assert.equal(packets.every((packet) => packet.purpose === "author-ci-plus-one-sentences"), true);
   assert.equal(packets.every((packet) => packet.globalRules.some((rule) => rule.includes("exactly one required new word"))), true);
+  assert.equal(packets.every((packet) => packet.items.every((item) => item.wordIndex >= 25)), true);
   assert.equal(
     packets.reduce((sum, packet) => sum + packet.items.reduce((itemSum, item) => itemSum + item.sentenceSlots.length, 0), 0),
     batches.reduce((sum, batch) => sum + batch.sentenceSlotCount, 0)
@@ -434,7 +440,8 @@ test("compact CI authoring packets preserve slots with a shared vocabulary pool"
   const stream = buildSentenceStream([...generateSentencesForKnownWordCount(1000), ...generateLockedSentences()], path);
   const targets = buildCiSentenceTargets(path, stream);
   const queue = buildCiCurationQueue(targets, 500);
-  const batches = buildCiCurationBatches(queue, path);
+  const authorable = buildAuthorableCiCurationQueue(queue, 500);
+  const batches = buildCiCurationBatches(authorable, path);
   const verbosePackets = buildCiAuthoringPackets(batches, path);
   const compactPackets = buildCompactCiAuthoringPackets(batches, path);
   assert.equal(compactPackets.length, verbosePackets.length);
@@ -460,11 +467,12 @@ test("authored CI intake accepts only slot-valid CI+1 sentences", () => {
   const stream = buildSentenceStream([...generateSentencesForKnownWordCount(1000), ...generateLockedSentences()], path);
   const targets = buildCiSentenceTargets(path, stream);
   const queue = buildCiCurationQueue(targets, 25);
-  const batches = buildCiCurationBatches(queue, path, 5, 1);
+  const authorable = buildAuthorableCiCurationQueue(queue, 25);
+  const batches = buildCiCurationBatches(authorable, path, 5, 1);
   const packets = buildCompactCiAuthoringPackets(batches, path);
-  const packet = packets.find((candidate) => candidate.items.some((item) => item.vocabularyId === "bu"));
+  const packet = packets[0];
   assert.ok(packet);
-  const item = packet.items.find((candidate) => candidate.vocabularyId === "bu");
+  const item = packet.items[0];
   assert.ok(item);
   const slot = item.sentenceSlots[0];
   const requiredWord = packet.vocabularyPool.find((word) => word.vocabularyId === slot.requiredNewWordId);
@@ -513,9 +521,10 @@ test("authored CI naturalness gate rejects fragment-like slot-valid lines", () =
   const stream = buildSentenceStream([...generateSentencesForKnownWordCount(1000), ...generateLockedSentences()], path);
   const targets = buildCiSentenceTargets(path, stream);
   const queue = buildCiCurationQueue(targets, 25);
-  const batches = buildCiCurationBatches(queue, path, 5, 1);
+  const authorable = buildAuthorableCiCurationQueue(queue, 25);
+  const batches = buildCiCurationBatches(authorable, path, 5, 1);
   const packets = buildCompactCiAuthoringPackets(batches, path);
-  const item = packets[0].items.find((candidate) => candidate.vocabularyId === "you");
+  const item = packets[0].items[0];
   assert.ok(item);
   const slot = item.sentenceSlots[0];
   const weak = {
@@ -528,7 +537,7 @@ test("authored CI naturalness gate rejects fragment-like slot-valid lines", () =
     simplified: "我有",
     pinyin: "wǒ yǒu",
     english: "I have some.",
-    vocabularyIds: ["wo", "you"],
+    vocabularyIds: ["wo", "you", slot.requiredNewWordId],
     reviewStatus: "authored" as const
   };
   const report = validateAuthoredCiSentences([weak], packets);
@@ -549,7 +558,8 @@ test("CI pipeline contract clarifies each engine step in order", () => {
   const streamResult = buildSentenceStreamWithReport([...generateSentencesForKnownWordCount(1000), ...generateLockedSentences()], path);
   const targets = buildCiSentenceTargets(path, streamResult.stream);
   const queue = buildCiCurationQueue(targets, 500);
-  const batches = buildCiCurationBatches(queue, path);
+  const authorable = buildAuthorableCiCurationQueue(queue, 500);
+  const batches = buildCiCurationBatches(authorable, path);
   const compactPackets = buildCompactCiAuthoringPackets(batches, path);
   const coverage = buildCiCoverageReport(targets);
   const srs = buildSrsSupportItems(streamResult.stream);
@@ -558,6 +568,7 @@ test("CI pipeline contract clarifies each engine step in order", () => {
     acquisitionVocabPath: path,
     ciSentenceTargets: targets,
     ciCurationQueue: queue,
+    authorableCiCurationQueue: authorable,
     ciCurationBatches: batches,
     compactCiAuthoringPackets: compactPackets,
     authoredCiValidationReport: {
@@ -589,6 +600,9 @@ test("CI pipeline contract clarifies each engine step in order", () => {
   ]);
   assert.equal(contract.steps.every((step, index) => step.order === index + 1), true);
   assert.equal(contract.steps.find((step) => step.id === "acquisition-path")?.currentCount, 10000);
+  assert.equal(contract.steps.find((step) => step.id === "curation-queue")?.gate.includes("authorable queue keeps only ready items"), true);
+  assert.equal(contract.steps.find((step) => step.id === "authoring-packets")?.inputs.includes("output/ci-authorable-curation-queue.json"), true);
+  assert.equal(contract.steps.find((step) => step.id === "authoring-packets")?.gate.includes("ready authorable queue item"), true);
   assert.equal(contract.steps.find((step) => step.id === "authoring-packets")?.outputs.includes("output/ci-authoring-packets.compact.json"), true);
   assert.equal(contract.steps.find((step) => step.id === "authored-intake")?.outputs.includes("output/authored-ci-validation-report.json"), true);
   assert.equal(contract.steps.find((step) => step.id === "authored-intake")?.outputs.includes("output/promoted-authored-ci-stream.json"), true);

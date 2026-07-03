@@ -72,7 +72,7 @@ export function buildCiPipelineContract(input: {
         purpose: "Prioritize exposure deficits, then separate mathematically needed targets from authorable natural-sentence targets.",
         inputs: ["output/ci-sentence-targets.json"],
         outputs: ["output/ci-curation-queue.json", "output/ci-authorable-curation-queue.json", "output/ci-curation-batches.json"],
-        gate: "Queue items must point to target words with exposure deficits; authoring packets must use only authorability-ready items.",
+        gate: "Raw queue items must point to target words with exposure deficits; authorable queue keeps only ready items for normal CI authoring packets.",
         currentCount: input.authorableCiCurationQueue?.length ?? input.ciCurationQueue.length,
         status: input.ciCurationQueue.length > 0 && (input.authorableCiCurationQueue?.length ?? input.ciCurationBatches.length) > 0 ? "implemented" : "partial"
       },
@@ -80,10 +80,10 @@ export function buildCiPipelineContract(input: {
         id: "authoring-packets",
         order: 5,
         name: "Authoring Packets",
-        purpose: "Expose sentence slots with allowed known vocabulary and acceptance criteria.",
-        inputs: ["output/ci-curation-batches.json", "output/acquisition-vocab-path.json"],
+        purpose: "Expose sentence slots from authorability-ready targets with allowed known vocabulary and acceptance criteria.",
+        inputs: ["output/ci-authorable-curation-queue.json", "output/ci-curation-batches.json", "output/acquisition-vocab-path.json"],
         outputs: ["output/ci-authoring-packets.json", "output/ci-authoring-packets.compact.json"],
-        gate: "Each slot must identify exactly one required new word and the known vocabulary allowance.",
+        gate: "Each packet item must originate from a ready authorable queue item and identify exactly one required new word plus the known vocabulary allowance.",
         currentCount: input.compactCiAuthoringPackets.reduce((sum, packet) => sum + packet.items.reduce((itemSum, item) => itemSum + item.sentenceSlots.length, 0), 0),
         status: input.compactCiAuthoringPackets.length > 0 ? "implemented" : "partial"
       },

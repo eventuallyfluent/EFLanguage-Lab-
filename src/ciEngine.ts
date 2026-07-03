@@ -180,6 +180,11 @@ export function buildCiCoverageReport(targets: CiSentenceTarget[]): CiCoverageRe
 }
 
 export function buildCiCurationBatches(queue: CiCurationQueueItem[], path: AcquisitionVocabPath, batchSize = 25, maxBatches = 4): CiCurationBatch[] {
+  const nonAuthorable = queue.find((item) => item.authorability !== "ready");
+  if (nonAuthorable) {
+    throw new Error(`CI curation batches must be built from the authorable queue; ${nonAuthorable.id} is ${nonAuthorable.authorability}.`);
+  }
+
   const selected = queue.slice(0, batchSize * maxBatches);
   const batches: CiCurationBatch[] = [];
 
