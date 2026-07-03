@@ -620,7 +620,7 @@ function pack300TransitLight(): PackInput {
     summary: "Simple transport phrases without real logistics problems.",
     unlockAtWordCount: 300,
     themeTags: ["transport", "time", "location"],
-    sentenceIds: ["curated-050", "curated-094", "curated-095"],
+    sentenceIds: ["curated-081", "curated-094", "curated-095"],
     dialogues: [
       {
         id: "dialogue-pack-300-transit-light",

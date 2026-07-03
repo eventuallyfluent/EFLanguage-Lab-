@@ -3,7 +3,7 @@
 ## Verification
 
 - `npm.cmd test`: passed.
-- Test result: 43 passed, 0 failed.
+- Test result: 49 passed, 0 failed after Phase 4 plan 04-01.
 - `npm.cmd run web:build`: passed after rerunning outside the filesystem sandbox.
 - Initial web build failure cause: Vite/esbuild could not read parent directories under sandbox restrictions and could not resolve `vite.config.ts`.
 
@@ -19,7 +19,7 @@
 - Learner-facing curated sentences: 51.
 - Sentence stream items: 49.
 - Review-only sentences: 23.
-- Blocked CI sentences: 20.
+- Blocked CI sentences: 21 after replacing a duplicate locked-pack sentence mapping.
 - CI sentence targets: 10000.
 - CI targets needing curation: 9960.
 - CI curation queue: 500.
@@ -85,7 +85,7 @@ Pan-Mandarin source modes:
 
 ## Next Route
 
-Phase 4 is planned. Next GSD action is to execute Phase 4: Curriculum, Islands, And Review Queues.
+Phase 4 is in progress. Plan `04-01` is complete; continue with plan `04-02`: Reading And Tier Policy Regression Gates.
 
 Phase 4 plan set:
 
@@ -93,3 +93,8 @@ Phase 4 plan set:
 - `04-02`: Reading And Tier Policy Regression Gates.
 - `04-03`: Pan-Mandarin Review Queue Metadata.
 - `04-04`: Curriculum Output Contract And Web Data Alignment.
+
+## Phase 4 Boundary Notes
+
+- Full generation now has regression coverage for active learner-facing packs, locked packs, draft sentences, and review-only sentence-stream report items.
+- `pack-300-transit-light` no longer reuses active 100-tier sentence `curated-050`; it uses transport/location sentence `curated-081` instead.

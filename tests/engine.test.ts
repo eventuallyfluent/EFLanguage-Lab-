@@ -6,8 +6,10 @@ import { curriculumPacks } from "../src/data/curriculumContent";
 import { curatedSentences } from "../src/data/curatedSentences";
 import { hskSeedLexicon, lexicon, lexiconBuildReport } from "../src/data/lexicon";
 import {
+  generateAll,
   generateCurriculumPacks,
   generateDialogues,
+  generateDraftSentences,
   generateLockedCurriculumPacks,
   generateLockedSentences,
   generateReadings,
@@ -776,6 +778,36 @@ test("learner-facing sentence generation is curated-only and pack-backed", () =>
   assertNoDuplicates(sentences, (sentence) => sentence.simplified);
 });
 
+test("full generation keeps learner-facing, locked, draft, and review-only content separate", () => {
+  const result = generateAll("output");
+  const activeSentenceIds = new Set(result.sentences.map((sentence) => sentence.id));
+  const activePackSentenceIds = new Set(result.curriculumPacks.flatMap((pack) => pack.sentences.map((sentence) => sentence.id)));
+  const lockedSentenceIds = new Set(result.lockedSentences.map((sentence) => sentence.id));
+  const draftSentenceIds = new Set(result.draftSentences.map((sentence) => sentence.id));
+  const reviewOnlySentenceIds = new Set(result.sentenceStreamBuildReport.reviewOnlySentences.map((sentence) => sentence.sentenceId));
+  const sentenceStreamSourceIds = new Set(result.sentenceStream.map((sentence) => sentence.sentenceId));
+
+  assert.equal(result.sentences.length > 0, true);
+  assert.equal(result.sentences.every((sentence) => sentence.reviewStatus === "curated"), true);
+  assert.equal(result.sentences.every((sentence) => sentence.packId !== undefined && sentence.tierId !== undefined), true);
+  assert.equal(result.sentences.every((sentence) => activePackSentenceIds.has(sentence.id)), true);
+  assert.equal(result.curriculumPacks.every((pack) => pack.unlockAtWordCount <= lexicon.length), true);
+  assert.equal(result.curriculumPacks.every((pack) => pack.sentences.every((sentence) => sentence.reviewStatus === "curated")), true);
+
+  assert.equal(result.lockedPacks.length > 0, true);
+  assert.equal(result.lockedPacks.every((pack) => pack.unlockAtWordCount > lexicon.length), true);
+  assert.equal(result.lockedPacks.every((pack) => pack.sentences.every((sentence) => sentence.reviewStatus === "curated")), true);
+  assert.equal([...lockedSentenceIds].some((id) => activeSentenceIds.has(id)), false);
+
+  assert.equal(result.draftSentences.length, 200);
+  assert.equal(result.draftSentences.every((sentence) => sentence.reviewStatus === "draft"), true);
+  assert.equal(result.draftSentences.every((sentence) => sentence.sourceNote?.includes("not learner-facing")), true);
+  assert.equal([...draftSentenceIds].some((id) => activeSentenceIds.has(id) || activePackSentenceIds.has(id)), false);
+
+  assert.equal(result.sentenceStreamBuildReport.reviewOnlySentences.every((sentence) => sentence.disposition === "review-only"), true);
+  assert.equal([...reviewOnlySentenceIds].some((id) => sentenceStreamSourceIds.has(id) || draftSentenceIds.has(id)), false);
+});
+
 test("learner-facing sentences only reference lexicon vocabulary", () => {
   const known = new Set(lexicon.map((entry) => entry.id));
   for (const sentence of generateSentences()) {
@@ -809,6 +841,17 @@ test("curriculum packs validate cleanly and stay staged by unlock threshold", ()
   assert.equal(currentPacks.every((pack) => pack.tierId === "100-tier"), true);
   assert.equal(lockedPacks.every((pack) => pack.unlockAtWordCount > lexicon.length), true);
   assert.equal(generateLockedSentences().every((sentence) => (sentence.unlockAtWordCount ?? 0) > lexicon.length), true);
+});
+
+test("draft sentence generation remains review material only", () => {
+  const activeSentenceIds = new Set(generateSentences().map((sentence) => sentence.id));
+  const draftSentences = generateDraftSentences();
+
+  assert.equal(draftSentences.length, 200);
+  assert.equal(draftSentences.every((sentence) => sentence.reviewStatus === "draft"), true);
+  assert.equal(draftSentences.every((sentence) => sentence.packId === undefined && sentence.tierId === undefined), true);
+  assert.equal(draftSentences.every((sentence) => sentence.sourceNote?.includes("not learner-facing")), true);
+  assert.equal(draftSentences.some((sentence) => activeSentenceIds.has(sentence.id)), false);
 });
 
 test("progression policy prevents adult themes before the right known-word tier", () => {
