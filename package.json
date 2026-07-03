@@ -1,0 +1,25 @@
+{
+  "name": "eventually-fluent-mandarin",
+  "version": "0.1.0",
+  "description": "Local-first Mandarin acquisition engine MVP using controlled HSK 3.0 vocabulary.",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "generate": "npm run build && node dist/src/index.js",
+    "test": "npm run generate && node --test dist/tests/*.test.js",
+    "dev": "npm run generate && vite --host 127.0.0.1",
+    "web:build": "npm run generate && vite build",
+    "web:preview": "vite preview --host 127.0.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.7.0",
+    "lucide-react": "^1.17.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "vite": "^6.4.3"
+  }
+}

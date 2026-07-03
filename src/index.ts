@@ -1,0 +1,85 @@
+import { generateAll } from "./generator";
+import { lexicon, lexiconBuildReport } from "./data/lexicon";
+import { templates } from "./templates";
+import { assertNoDuplicates } from "./quality";
+
+const result = generateAll();
+
+assertNoDuplicates(result.sentences, (sentence) => sentence.simplified);
+
+const summary = {
+  lexiconEntries: lexicon.length,
+  hskBackboneEntries: lexiconBuildReport.hskBackbone,
+  movieRankedEntries: lexiconBuildReport.movieRanked,
+  bookRankedEntries: lexiconBuildReport.bookRanked,
+  blcuRankedEntries: lexiconBuildReport.blcuRanked,
+  templates: templates.length,
+  sentences: result.sentences.length,
+  lockedSentences: result.lockedSentences.length,
+  draftSentences: result.draftSentences.length,
+  curatedSentences: result.sentences.filter((sentence) => sentence.reviewStatus === "curated").length,
+  validatedSentences: result.sentences.filter((sentence) => sentence.reviewStatus === "validated").length,
+  learnerFacingPolicy: "curated-only",
+  activeKnownWordCount: lexicon.length,
+  acquisitionPathTarget: result.acquisitionVocabPath.targetVocabularyCount,
+  acquisitionPathCandidates: result.acquisitionVocabPath.currentCandidateCount,
+  sourceListImportModes: Object.fromEntries(result.sourceListImportAudit.sourceLists.map((source) => [source.source, source.importMode])),
+  sourceListWarnings: result.sourceListImportAudit.warnings,
+  panMandarinSourceImportModes: Object.fromEntries(result.panMandarinSourceAudit.sourceStatuses.map((source) => [source.id, source.importMode])),
+  panMandarinSourceWarnings: result.panMandarinSourceAudit.warnings,
+  panMandarinVocabEntries: result.panMandarinVocab.length,
+  panMandarinUniversalCoreEntries: result.panMandarinVocab.filter((entry) => entry.category === "universal-core").length,
+  panMandarinCiCandidates: result.panMandarinCiCandidates.length,
+  panMandarinCiAcceptedReview: result.panMandarinCiCoverageReport.acceptedReviewCount,
+  panMandarinCiNeedsHumanReview: result.panMandarinCiCoverageReport.needsHumanReviewCount,
+  panMandarinIslandUnlocks: result.panMandarinIslandUnlocks.length,
+  panMandarinStoryTopicPlans: result.panMandarinStoryTopicPlan.length,
+  panMandarinStoryTopicsReady: result.panMandarinStoryTopicPlan.filter((plan) => plan.status === "story-ready").length,
+  panMandarinStoryQueues: result.panMandarinStoryQueues.length,
+  panMandarinPremadeIslands: result.panMandarinPremadeIslands.length,
+  panMandarinPremadeStories: result.panMandarinPremadeStories.length,
+  panMandarinPremadeStoryLines: result.panMandarinContentCoverageReport.premadeStoryLineCount,
+  panMandarinReviewReadyStories: result.panMandarinContentCoverageReport.reviewReadyStoryQueueCount,
+  panMandarinContentReviewQueue: result.panMandarinContentReviewReport.queueItemCount,
+  panMandarinContentNeedsHumanReview: result.panMandarinContentReviewReport.needsHumanReviewCount,
+  dailyShadowDays: result.dailyShadowSchedule.days.length,
+  dailyShadowItems: result.dailyShadowSchedule.items.length,
+  dailyShadowNewItemsPerDay: result.dailyShadowSchedule.newItemsPerDay,
+  defaultShadowCompletionYears: result.dailyShadowSchedule.defaultCompletionYears,
+  srsDailyPlanDays: result.srsDailyPlan.days.length,
+  curriculumRoadmapStages: result.curriculumRoadmap.stages.length,
+  curriculumRoadmapStoryUnlocks: result.curriculumRoadmap.storyUnlocks.length,
+  ciPathTarget: result.ciPath.targetVocabularyCount,
+  ciSentenceTargets: result.ciSentenceTargets.length,
+  ciTargetsNeedingCuration: result.ciSentenceTargets.filter((target) => target.status === "needs-curation").length,
+  ciCurationQueue: result.ciCurationQueue.length,
+  ciAuthorableCurationQueue: result.authorableCiCurationQueue.length,
+  ciCurationBatches: result.ciCurationBatches.length,
+  ciCurationBatchSlots: result.ciCurationBatches.reduce((sum, batch) => sum + batch.sentenceSlotCount, 0),
+  ciAuthoringPackets: result.ciAuthoringPackets.length,
+  ciAuthoringPacketSlots: result.ciAuthoringPackets.reduce((sum, packet) => sum + packet.items.reduce((itemSum, item) => itemSum + item.sentenceSlots.length, 0), 0),
+  compactCiAuthoringPackets: result.compactCiAuthoringPackets.length,
+  compactCiVocabularyPoolItems: result.compactCiAuthoringPackets.reduce((sum, packet) => sum + packet.vocabularyPool.length, 0),
+  authoredCiSentencesAccepted: result.authoredCiValidationReport.acceptedCount,
+  authoredCiSentencesRejected: result.authoredCiValidationReport.rejectedCount,
+  promotedAuthoredCiStreamItems: result.promotedAuthoredCiStream.length,
+  ciPipelineSteps: result.ciPipelineContract.steps.length,
+  ciPipelinePartialSteps: result.ciPipelineContract.steps.filter((step) => step.status === "partial").length,
+  ciTotalExposureDeficit: result.ciCoverageReport.totalExposureDeficit,
+  sentenceStreamItems: result.sentenceStream.length,
+  sentenceStreamCandidates: result.sentenceStreamBuildReport.candidateSentenceCount,
+  reviewOnlySentences: result.sentenceStreamBuildReport.reviewOnlyCount,
+  blockedCiSentences: result.sentenceStreamBuildReport.blockedCount,
+  islandUnlocks: result.acquisitionVocabPath.stages.filter((stage) => stage.allowedContent.includes("language-island")).length,
+  curriculumPacks: result.curriculumPacks.length,
+  lockedPacks: result.lockedPacks.length,
+  dialogues: result.dialogues.length,
+  readings: result.readings.length,
+  readingCoverage: result.readings.map((reading) => ({
+    id: reading.id,
+    coverage: reading.knownVocabularyCoverage,
+    ciPlusOneValid: reading.ciPlusOneValid
+  }))
+};
+
+console.log(JSON.stringify(summary, null, 2));
