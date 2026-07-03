@@ -207,6 +207,27 @@ export interface CurriculumPack {
   readings: CurriculumReading[];
 }
 
+export type CurriculumContentSurfaceRole = "learner-facing" | "locked-future" | "draft-review" | "review-only" | "support";
+
+export interface CurriculumContentContractSurface {
+  id: string;
+  role: CurriculumContentSurfaceRole;
+  outputPath: string;
+  publicDataPath?: string;
+  itemCount: number;
+  allowedReviewStatuses: string[];
+  promotionGate: string;
+}
+
+export interface CurriculumContentContract {
+  id: "curriculum-content-contract-v1";
+  primaryLearnerFacingSurface: "curriculum-packs";
+  learnerFacingPolicy: "curated-only";
+  draftPolicy: "not-learner-facing";
+  reviewOnlyPolicy: "human-curation-required";
+  surfaces: CurriculumContentContractSurface[];
+}
+
 export type ProductLoopRole = "primary-acquisition" | "core-practice" | "support-retention" | "unlockable-reading";
 export type PrimaryAcquisitionMode = "ci-plus-one-sentence-stream";
 export type RepetitionStyle = "glossika-style";

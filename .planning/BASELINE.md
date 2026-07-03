@@ -3,8 +3,8 @@
 ## Verification
 
 - `npm.cmd test`: passed.
-- Test result: 51 passed, 0 failed after Phase 4 plan 04-02.
-- `npm.cmd run web:build`: passed after rerunning outside the filesystem sandbox.
+- Test result: 52 passed, 0 failed after Phase 4 plan 04-04.
+- `npm.cmd run web:build`: passed after rerunning outside the filesystem sandbox during Phase 4 plan 04-04.
 - Initial web build failure cause: Vite/esbuild could not read parent directories under sandbox restrictions and could not resolve `vite.config.ts`.
 
 ## Generated Counts
@@ -86,7 +86,7 @@ Pan-Mandarin source modes:
 
 ## Next Route
 
-Phase 4 is in progress. Plans `04-01` and `04-02` are complete; continue with plan `04-03`: Pan-Mandarin Review Queue Metadata.
+Phase 4 implementation plans are complete. Next action is Phase 4 verification.
 
 Phase 4 plan set:
 
@@ -102,3 +102,4 @@ Phase 4 plan set:
 - Curriculum validation now rejects readings outside 95-98% known coverage, readings with no controlled new word, reading lines with more than two new words, and hidden forbidden themes on sentences, dialogues, or readings.
 - Pre-2000 packs no longer use work/health-tagged source sentences through benign pack tags.
 - Pan-Mandarin content review queue items now include normalized source item metadata, max allowed communication rank, coverage target, suggested curation action, and blocking reasons.
+- `curriculum-content-contract.json` is generated to both `output/` and `public/data/`, distinguishing learner-facing, locked-future, draft-review, review-only, and support surfaces.

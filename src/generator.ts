@@ -9,6 +9,7 @@ import { flattenPackSentences, validateCurriculumPack } from "./curriculum";
 import { article, enAdjective, enNoun, enSubject, enTime, enVerb } from "./english";
 import {
   CurriculumPack,
+  CurriculumContentContract,
   Dialogue,
   DialogueTurn,
   GeneratedSentence,
@@ -129,6 +130,18 @@ export function generateAll(outputDir = "output") {
     ciCoverageReport,
     srsSupport
   });
+  const curriculumContentContract = buildCurriculumContentContract({
+    sentences,
+    lockedSentences,
+    draftSentences,
+    curriculumPacks: activePacks,
+    lockedPacks,
+    readings,
+    sentenceStream,
+    reviewOnlySentences: sentenceStreamBuildReport.reviewOnlySentences,
+    panMandarinContentReviewQueue,
+    srsSupport
+  });
 
   mkdirSync(outputDir, { recursive: true });
   writeFileSync(join(outputDir, "sentences.json"), JSON.stringify(sentences, null, 2), "utf8");
@@ -175,6 +188,7 @@ export function generateAll(outputDir = "output") {
   writeFileSync(join(outputDir, "authored-ci-validation-report.json"), JSON.stringify(authoredCiValidationReport, null, 2), "utf8");
   writeFileSync(join(outputDir, "promoted-authored-ci-stream.json"), JSON.stringify(promotedAuthoredCiStream, null, 2), "utf8");
   writeFileSync(join(outputDir, "ci-pipeline-contract.json"), JSON.stringify(ciPipelineContract, null, 2), "utf8");
+  writeFileSync(join(outputDir, "curriculum-content-contract.json"), JSON.stringify(curriculumContentContract, null, 2), "utf8");
   writeFileSync(join(outputDir, "ci-coverage-report.json"), JSON.stringify(ciCoverageReport, null, 2), "utf8");
   writeFileSync(join(outputDir, "sentence-stream.json"), JSON.stringify(sentenceStream, null, 2), "utf8");
   writeFileSync(join(outputDir, "sentence-stream-build-report.json"), JSON.stringify(sentenceStreamBuildReport, null, 2), "utf8");
@@ -184,10 +198,10 @@ export function generateAll(outputDir = "output") {
   writeFileSync(join(outputDir, "article-unlocks.json"), JSON.stringify(articleUnlocks, null, 2), "utf8");
   writeFileSync(join(outputDir, "srs-support.json"), JSON.stringify(srsSupport, null, 2), "utf8");
   if (outputDir === "output") {
-    writeWebData({ sentences, lockedSentences, draftSentences, dialogues, readings, curriculumPacks: activePacks, lockedPacks, acquisitionVocabPath, sourceListImportAudit, panMandarinSourceAudit, panMandarinVocab, panMandarinCiCandidates, panMandarinCiCoverageReport, panMandarinIslandUnlocks, panMandarinStoryTopicPlan, panMandarinStoryQueues, panMandarinPremadeIslands, panMandarinPremadeStories, panMandarinContentCoverageReport, panMandarinContentReviewQueue, panMandarinContentReviewReport, dailyShadowSchedule, shadowSessionPlan, srsDailyPlan, curriculumRoadmap, ciPath, ciSentenceTargets, ciCurationQueue, authorableCiCurationQueue, ciCurationBatches, ciAuthoringPackets, compactCiAuthoringPackets: finalCompactCiAuthoringPackets, authoredCiSentences, authoredCiValidationReport, promotedAuthoredCiStream, ciPipelineContract, ciCoverageReport, sentenceStream, sentenceStreamBuildReport, srsSupport, articleUnlocks });
+    writeWebData({ sentences, lockedSentences, draftSentences, dialogues, readings, curriculumPacks: activePacks, lockedPacks, acquisitionVocabPath, sourceListImportAudit, panMandarinSourceAudit, panMandarinVocab, panMandarinCiCandidates, panMandarinCiCoverageReport, panMandarinIslandUnlocks, panMandarinStoryTopicPlan, panMandarinStoryQueues, panMandarinPremadeIslands, panMandarinPremadeStories, panMandarinContentCoverageReport, panMandarinContentReviewQueue, panMandarinContentReviewReport, dailyShadowSchedule, shadowSessionPlan, srsDailyPlan, curriculumRoadmap, ciPath, ciSentenceTargets, ciCurationQueue, authorableCiCurationQueue, ciCurationBatches, ciAuthoringPackets, compactCiAuthoringPackets: finalCompactCiAuthoringPackets, authoredCiSentences, authoredCiValidationReport, promotedAuthoredCiStream, ciPipelineContract, curriculumContentContract, ciCoverageReport, sentenceStream, sentenceStreamBuildReport, srsSupport, articleUnlocks });
   }
 
-  return { sentences, lockedSentences, draftSentences, dialogues, readings, curriculumPacks: activePacks, lockedPacks, acquisitionVocabPath, sourceListImportAudit, panMandarinSourceAudit, panMandarinVocab, panMandarinCiCandidates, panMandarinCiCoverageReport, panMandarinIslandUnlocks, panMandarinStoryTopicPlan, panMandarinStoryQueues, panMandarinPremadeIslands, panMandarinPremadeStories, panMandarinContentCoverageReport, panMandarinContentReviewQueue, panMandarinContentReviewReport, dailyShadowSchedule, shadowSessionPlan, srsDailyPlan, curriculumRoadmap, ciPath, ciSentenceTargets, ciCurationQueue, authorableCiCurationQueue, ciCurationBatches, ciAuthoringPackets, compactCiAuthoringPackets: finalCompactCiAuthoringPackets, authoredCiSentences, authoredCiValidationReport, promotedAuthoredCiStream, ciPipelineContract, ciCoverageReport, sentenceStream, sentenceStreamBuildReport, srsSupport, articleUnlocks };
+  return { sentences, lockedSentences, draftSentences, dialogues, readings, curriculumPacks: activePacks, lockedPacks, acquisitionVocabPath, sourceListImportAudit, panMandarinSourceAudit, panMandarinVocab, panMandarinCiCandidates, panMandarinCiCoverageReport, panMandarinIslandUnlocks, panMandarinStoryTopicPlan, panMandarinStoryQueues, panMandarinPremadeIslands, panMandarinPremadeStories, panMandarinContentCoverageReport, panMandarinContentReviewQueue, panMandarinContentReviewReport, dailyShadowSchedule, shadowSessionPlan, srsDailyPlan, curriculumRoadmap, ciPath, ciSentenceTargets, ciCurationQueue, authorableCiCurationQueue, ciCurationBatches, ciAuthoringPackets, compactCiAuthoringPackets: finalCompactCiAuthoringPackets, authoredCiSentences, authoredCiValidationReport, promotedAuthoredCiStream, ciPipelineContract, curriculumContentContract, ciCoverageReport, sentenceStream, sentenceStreamBuildReport, srsSupport, articleUnlocks };
 }
 
 export function generateSentences(targetCount = curatedSentences.length): GeneratedSentence[] {
@@ -475,6 +489,51 @@ function validateAllCurriculumPacks(): void {
   }
 }
 
+function buildCurriculumContentContract(input: {
+  sentences: GeneratedSentence[];
+  lockedSentences: GeneratedSentence[];
+  draftSentences: GeneratedSentence[];
+  curriculumPacks: CurriculumPack[];
+  lockedPacks: CurriculumPack[];
+  readings: ReadingPassage[];
+  sentenceStream: ReturnType<typeof buildSentenceStreamWithReport>["stream"];
+  reviewOnlySentences: ReturnType<typeof buildSentenceStreamWithReport>["report"]["reviewOnlySentences"];
+  panMandarinContentReviewQueue: ReturnType<typeof buildPanMandarinContentReviewQueue>;
+  srsSupport: ReturnType<typeof buildSrsSupportItems>;
+}): CurriculumContentContract {
+  return {
+    id: "curriculum-content-contract-v1",
+    primaryLearnerFacingSurface: "curriculum-packs",
+    learnerFacingPolicy: "curated-only",
+    draftPolicy: "not-learner-facing",
+    reviewOnlyPolicy: "human-curation-required",
+    surfaces: [
+      surface("sentences", "learner-facing", "output/sentences.json", "public/data/sentences.json", input.sentences.length, ["curated"], "flattened from active curated curriculum packs"),
+      surface("curriculum-packs", "learner-facing", "output/curriculum-packs.json", "public/data/curriculum-packs.json", input.curriculumPacks.length, ["curated"], "active packs only; all pack content must validate against curriculum policy"),
+      surface("readings", "learner-facing", "output/readings.json", "public/data/readings.json", input.readings.length, ["curated"], "active pack readings only; CI+1 coverage and tier complexity required"),
+      surface("locked-sentences", "locked-future", "output/locked-sentences.json", "public/data/locked-sentences.json", input.lockedSentences.length, ["curated"], "future curated pack material; not active until unlock threshold is reached"),
+      surface("locked-packs", "locked-future", "output/locked-packs.json", "public/data/locked-packs.json", input.lockedPacks.length, ["curated"], "future packs; not active until unlock threshold is reached"),
+      surface("draft-sentences", "draft-review", "output/draft-sentences.json", "public/data/draft-sentences.json", input.draftSentences.length, ["draft"], "template candidates; never learner-facing without curation"),
+      surface("sentence-stream", "learner-facing", "output/sentence-stream.json", "public/data/sentence-stream.json", input.sentenceStream.length, ["curated"], "primary CI+1 stream after curated/authored validation"),
+      surface("review-only-sentences", "review-only", "output/review-only-sentences.json", "public/data/review-only-sentences.json", input.reviewOnlySentences.length, ["review-only"], "known-only or non-acquisition candidates; not learner-facing CI"),
+      surface("pan-mandarin-content-review-queue", "review-only", "output/pan-mandarin-content-review-queue.json", "public/data/pan-mandarin-content-review-queue.json", input.panMandarinContentReviewQueue.length, ["review-only"], "pan-Mandarin island/story material requires human curation before promotion"),
+      surface("srs-support", "support", "output/srs-support.json", "public/data/srs-support.json", input.srsSupport.length, ["curated"], "retention support derived only after CI stream exposure")
+    ]
+  };
+}
+
+function surface(
+  id: string,
+  role: CurriculumContentContract["surfaces"][number]["role"],
+  outputPath: string,
+  publicDataPath: string,
+  itemCount: number,
+  allowedReviewStatuses: string[],
+  promotionGate: string
+): CurriculumContentContract["surfaces"][number] {
+  return { id, role, outputPath, publicDataPath, itemCount, allowedReviewStatuses, promotionGate };
+}
+
 function writeWebData(result: {
   sentences: GeneratedSentence[];
   lockedSentences: GeneratedSentence[];
@@ -512,6 +571,7 @@ function writeWebData(result: {
   authoredCiValidationReport: ReturnType<typeof validateAuthoredCiSentences>;
   promotedAuthoredCiStream: ReturnType<typeof promoteAuthoredCiSentencesToStream>;
   ciPipelineContract: ReturnType<typeof buildCiPipelineContract>;
+  curriculumContentContract: CurriculumContentContract;
   ciCoverageReport: ReturnType<typeof buildCiCoverageReport>;
   sentenceStream: ReturnType<typeof buildSentenceStreamWithReport>["stream"];
   sentenceStreamBuildReport: ReturnType<typeof buildSentenceStreamWithReport>["report"];
@@ -561,6 +621,7 @@ function writeWebData(result: {
   writeFileSync(join(dataDir, "authored-ci-validation-report.json"), JSON.stringify(result.authoredCiValidationReport, null, 2), "utf8");
   writeFileSync(join(dataDir, "promoted-authored-ci-stream.json"), JSON.stringify(result.promotedAuthoredCiStream, null, 2), "utf8");
   writeFileSync(join(dataDir, "ci-pipeline-contract.json"), JSON.stringify(result.ciPipelineContract, null, 2), "utf8");
+  writeFileSync(join(dataDir, "curriculum-content-contract.json"), JSON.stringify(result.curriculumContentContract, null, 2), "utf8");
   writeFileSync(join(dataDir, "ci-coverage-report.json"), JSON.stringify(result.ciCoverageReport, null, 2), "utf8");
   writeFileSync(join(dataDir, "sentence-stream.json"), JSON.stringify(result.sentenceStream, null, 2), "utf8");
   writeFileSync(join(dataDir, "sentence-stream-build-report.json"), JSON.stringify(result.sentenceStreamBuildReport, null, 2), "utf8");

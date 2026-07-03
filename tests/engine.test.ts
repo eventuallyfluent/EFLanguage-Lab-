@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import { isValidCombination } from "../src/compatibility";
 import { curriculumPolicyForTier, curriculumTierPolicies, validateCurriculumPack } from "../src/curriculum";
 import type { IslandTag } from "../src/models";
@@ -814,6 +815,31 @@ test("full generation keeps learner-facing, locked, draft, and review-only conte
 
   assert.equal(result.sentenceStreamBuildReport.reviewOnlySentences.every((sentence) => sentence.disposition === "review-only"), true);
   assert.equal([...reviewOnlySentenceIds].some((id) => sentenceStreamSourceIds.has(id) || draftSentenceIds.has(id)), false);
+});
+
+test("curriculum content contract distinguishes active, locked, draft, review-only, and support surfaces", () => {
+  const result = generateAll("output");
+  const contract = result.curriculumContentContract;
+  const surfaces = new Map(contract.surfaces.map((surface) => [surface.id, surface]));
+
+  assert.equal(contract.id, "curriculum-content-contract-v1");
+  assert.equal(contract.primaryLearnerFacingSurface, "curriculum-packs");
+  assert.equal(contract.learnerFacingPolicy, "curated-only");
+  assert.equal(contract.draftPolicy, "not-learner-facing");
+  assert.equal(contract.reviewOnlyPolicy, "human-curation-required");
+  assert.equal(surfaces.get("sentences")?.role, "learner-facing");
+  assert.equal(surfaces.get("sentences")?.itemCount, result.sentences.length);
+  assert.deepEqual(surfaces.get("sentences")?.allowedReviewStatuses, ["curated"]);
+  assert.equal(surfaces.get("locked-packs")?.role, "locked-future");
+  assert.equal(surfaces.get("locked-packs")?.itemCount, result.lockedPacks.length);
+  assert.equal(surfaces.get("draft-sentences")?.role, "draft-review");
+  assert.deepEqual(surfaces.get("draft-sentences")?.allowedReviewStatuses, ["draft"]);
+  assert.equal(surfaces.get("review-only-sentences")?.role, "review-only");
+  assert.equal(surfaces.get("pan-mandarin-content-review-queue")?.itemCount, result.panMandarinContentReviewQueue.length);
+  assert.equal(surfaces.get("srs-support")?.role, "support");
+  assert.equal(contract.surfaces.every((surface) => surface.outputPath.startsWith("output/") && surface.publicDataPath?.startsWith("public/data/")), true);
+  assert.equal(existsSync("output/curriculum-content-contract.json"), true);
+  assert.equal(existsSync("public/data/curriculum-content-contract.json"), true);
 });
 
 test("learner-facing sentences only reference lexicon vocabulary", () => {
