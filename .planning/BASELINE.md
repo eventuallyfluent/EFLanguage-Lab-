@@ -85,4 +85,11 @@ Pan-Mandarin source modes:
 
 ## Next Route
 
-Phase 3 is verified and closed. Next GSD action is to plan Phase 4: Curriculum, Islands, And Review Queues.
+Phase 4 is planned. Next GSD action is to execute Phase 4: Curriculum, Islands, And Review Queues.
+
+Phase 4 plan set:
+
+- `04-01`: Learner-Facing Curriculum Boundary Hardening.
+- `04-02`: Reading And Tier Policy Regression Gates.
+- `04-03`: Pan-Mandarin Review Queue Metadata.
+- `04-04`: Curriculum Output Contract And Web Data Alignment.

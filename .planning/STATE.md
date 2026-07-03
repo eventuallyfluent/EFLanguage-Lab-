@@ -3,18 +3,18 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-last_updated: "2026-07-03T12:23:30.573Z"
+last_updated: "2026-07-03T12:45:00.000Z"
 progress:
   total_phases: 6
   completed_phases: 3
-  total_plans: 6
+  total_plans: 10
   completed_plans: 6
 ---
 
 # State: Eventually Fluent Mandarin
 
 **Updated:** 2026-07-03
-**Status:** Phase 3 complete; Phase 4 ready to plan
+**Status:** Phase 4 planned; ready to execute
 
 ## Project Reference
 
@@ -89,6 +89,26 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - Verified `npm.cmd test`: 47 passed, 0 failed.
 - Verified `npm.cmd run web:build`: passed after sandbox-escalated rerun.
 
+## Planned Phase
+
+### Phase 4: Curriculum, Islands, And Review Queues
+
+**Goal:** Strengthen staged learner-facing content and review-only content flows without letting raw generated content bypass curation.
+
+**Plans:**
+
+- `04-01-PLAN.md`: Learner-Facing Curriculum Boundary Hardening.
+- `04-02-PLAN.md`: Reading And Tier Policy Regression Gates.
+- `04-03-PLAN.md`: Pan-Mandarin Review Queue Metadata.
+- `04-04-PLAN.md`: Curriculum Output Contract And Web Data Alignment.
+
+**Planned:**
+
+- Active learner-facing curriculum boundary hardening.
+- Reading coverage and tier policy regression gates.
+- Actionable pan-Mandarin review queue metadata.
+- Generated output contract and web data alignment.
+
 ## Key Decisions
 
 - `PROJECT_TRUTH.md` is authoritative when older metadata or docs conflict with current engine direction.
@@ -128,7 +148,8 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - Completed `03-02`: Naturalness Gate Expansion.
 - Completed `03-03`: Coverage Deficit Reporting Without Forced Authoring.
 - Created `.planning/phases/03-ci-authoring-quality-expansion/03-VERIFICATION.md`.
+- Created Phase 4 research and execution plans under `.planning/phases/04-curriculum-islands-and-review-queues/`.
 
 ## Next Action
 
-Run `$gsd-plan-phase 4` to create atomic plans for Curriculum, Islands, And Review Queues.
+Run `$gsd-execute-phase 4` to execute Curriculum, Islands, And Review Queues.

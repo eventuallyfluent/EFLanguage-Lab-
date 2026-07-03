@@ -56,6 +56,8 @@
 
 ## Phase 4: Curriculum, Islands, And Review Queues
 
+**Status:** Planned - 2026-07-03
+
 **Goal:** Strengthen staged learner-facing content and review-only content flows without letting raw generated content bypass curation.
 
 **Requirements:** CURR-01, CURR-02, CURR-03, CURR-04, CURR-05, CURR-06
@@ -66,6 +68,13 @@
 2. Reading and curriculum tests enforce CI+1 coverage and staged complexity.
 3. Island/story outputs stay review-only until curated.
 4. Review queues provide enough metadata for human curation decisions.
+
+**Execution Plans:**
+
+- `.planning/phases/04-curriculum-islands-and-review-queues/04-01-PLAN.md`: Learner-Facing Curriculum Boundary Hardening.
+- `.planning/phases/04-curriculum-islands-and-review-queues/04-02-PLAN.md`: Reading And Tier Policy Regression Gates.
+- `.planning/phases/04-curriculum-islands-and-review-queues/04-03-PLAN.md`: Pan-Mandarin Review Queue Metadata.
+- `.planning/phases/04-curriculum-islands-and-review-queues/04-04-PLAN.md`: Curriculum Output Contract And Web Data Alignment.
 
 ## Phase 5: Shadowing And SRS Support
 
