@@ -18,6 +18,8 @@
 
 ## Phase 2: Source Path Hardening
 
+**Status:** Complete - 2026-07-03
+
 **Goal:** Keep the 10k vocabulary path honest, source-backed, and resilient as pan-Mandarin ranking and parser work continues.
 
 **Requirements:** SRC-01, SRC-02, SRC-03, SRC-04

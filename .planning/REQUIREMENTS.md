@@ -14,10 +14,10 @@
 
 ### Source Path
 
-- [ ] **SRC-01**: The 10k path remains source-backed and exposes source membership for each vocabulary item.
-- [ ] **SRC-02**: Source audit outputs distinguish file-backed, fixture-backed, missing, and manual source families.
-- [ ] **SRC-03**: Pan-Mandarin concept entries retain regional/script variants where available.
-- [ ] **SRC-04**: Source parser or ranking changes are covered by tests that catch path-size and ordering regressions.
+- [x] **SRC-01**: The 10k path remains source-backed and exposes source membership for each vocabulary item.
+- [x] **SRC-02**: Source audit outputs distinguish file-backed, fixture-backed, missing, and manual source families.
+- [x] **SRC-03**: Pan-Mandarin concept entries retain regional/script variants where available.
+- [x] **SRC-04**: Source parser or ranking changes are covered by tests that catch path-size and ordering regressions.
 
 ### CI Authoring
 
@@ -81,10 +81,10 @@
 | BASE-02 | Phase 1 | Complete |
 | BASE-03 | Phase 1 | Complete |
 | BASE-04 | Phase 1 | Complete |
-| SRC-01 | Phase 2 | Planned |
-| SRC-02 | Phase 2 | Planned |
-| SRC-03 | Phase 2 | Planned |
-| SRC-04 | Phase 2 | Planned |
+| SRC-01 | Phase 2 | Complete |
+| SRC-02 | Phase 2 | Complete |
+| SRC-03 | Phase 2 | Complete |
+| SRC-04 | Phase 2 | Complete |
 | CI-01 | Phase 3 | Pending |
 | CI-02 | Phase 3 | Pending |
 | CI-03 | Phase 3 | Pending |
@@ -112,4 +112,4 @@
 
 ---
 *Requirements defined: 2026-07-03*
-*Last updated: 2026-07-03 after Phase 2 planning*
+*Last updated: 2026-07-03 after Phase 2 completion*

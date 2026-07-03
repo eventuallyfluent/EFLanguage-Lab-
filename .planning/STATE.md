@@ -1,14 +1,14 @@
 # State: Eventually Fluent Mandarin
 
 **Updated:** 2026-07-03
-**Status:** Phase 1 complete; Phase 2 planned and ready to execute
+**Status:** Phase 2 complete; Phase 3 ready to plan
 
 ## Project Reference
 
 See: `.planning/PROJECT.md` (updated 2026-07-03)
 
 **Core value:** The engine must produce a natural, source-backed 10k CI+1 Mandarin sentence ladder that can carry acquisition; every other surface supports that ladder.
-**Current focus:** Execute Phase 2 - Source Path Hardening
+**Current focus:** Phase 3 - CI Authoring Quality Expansion
 
 ## Current Position
 
@@ -31,7 +31,7 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - Ran `npm.cmd run web:build`: passed after sandbox-escalated rerun.
 - Recorded generated counts in `.planning/BASELINE.md`.
 
-## Current Phase
+## Completed Phase
 
 ### Phase 2: Source Path Hardening
 
@@ -43,11 +43,29 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - `02-02-PLAN.md`: Parser And Ranking Regression Hardening.
 - `02-03-PLAN.md`: Variant And Source Role Documentation.
 
-**Open tasks for execution:**
+**Completed:**
 
-- Use `.planning/PAN_MANDARIN_VOCAB_PLAN.md` as relevant context.
-- Preserve source-mode honesty for missing and fixture-backed source families.
-- Keep parser/ranking changes test-covered.
+- Clarified source audit roles and notes for legacy and pan-Mandarin source families.
+- Updated project metadata away from the old HSK-only description.
+- Added parser field invariants for TUBELEX, SUBTLEX-CH, HSK, and TOCFL.
+- Added deterministic first-page ranking and communication path rank tests.
+- Added representative script/region/source-reference variant tests.
+- Documented pan-Mandarin variant invariants.
+- Verified `npm.cmd test`: 45 passed, 0 failed.
+- Verified `npm.cmd run web:build`: passed after sandbox-escalated rerun.
+
+## Current Phase
+
+### Phase 3: CI Authoring Quality Expansion
+
+**Goal:** Increase useful CI authoring throughput while preserving strict separation between raw exposure deficits and learner-facing authored lines.
+
+**Open tasks:**
+
+- Plan Phase 3 into atomic execution plans.
+- Preserve authorable queue as the source for authoring packets.
+- Keep bootstrap-only and needs-more-known-vocabulary targets out of normal learner-facing authored CI packets.
+- Keep authored intake naturalness validation strict.
 
 ## Key Decisions
 
@@ -78,7 +96,11 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - Verified `npm.cmd test`.
 - Verified `npm.cmd run web:build`.
 - Created Phase 2 research and execution plans under `.planning/phases/02-source-path-hardening/`.
+- Completed `02-01`: Source Audit Contract Cleanup.
+- Completed `02-02`: Parser And Ranking Regression Hardening.
+- Completed `02-03`: Variant And Source Role Documentation.
+- Created `.planning/phases/02-source-path-hardening/02-VERIFICATION.md`.
 
 ## Next Action
 
-Run `$gsd-execute-phase 2` to execute Source Path Hardening.
+Run `$gsd-plan-phase 3` to create atomic plans for CI Authoring Quality Expansion.
