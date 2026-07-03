@@ -67,7 +67,7 @@ function resolvePack(input: PackInput): CurriculumPack {
       unlockAtWordCount: input.unlockAtWordCount,
       complexity: sentenceComplexity(sentence),
       contentType: "sentence" as const,
-      themeTags: input.themeTags
+      themeTags: Array.from(new Set([...(sentence.themeTags ?? []), ...input.themeTags]))
     };
   });
 
@@ -585,7 +585,7 @@ function pack300Device(): PackInput {
     summary: "Simple phone and computer use without work pressure.",
     unlockAtWordCount: 300,
     themeTags: ["shopping", "daily-life", "social"],
-    sentenceIds: ["curated-072", "curated-073", "curated-080"],
+    sentenceIds: ["curated-072", "curated-073", "curated-074"],
     dialogues: [
       {
         id: "dialogue-pack-300-device",
@@ -620,7 +620,7 @@ function pack300TransitLight(): PackInput {
     summary: "Simple transport phrases without real logistics problems.",
     unlockAtWordCount: 300,
     themeTags: ["transport", "time", "location"],
-    sentenceIds: ["curated-081", "curated-094", "curated-095"],
+    sentenceIds: ["curated-081", "curated-082", "curated-083"],
     dialogues: [
       {
         id: "dialogue-pack-300-transit-light",
@@ -655,7 +655,7 @@ function pack1000Delay(): PackInput {
     summary: "Simple scheduling pressure without adult operating-life content.",
     unlockAtWordCount: 1000,
     themeTags: ["time", "transport", "social"],
-    sentenceIds: ["curated-093", "curated-094", "curated-096"],
+    sentenceIds: ["curated-097", "curated-098", "curated-100"],
     dialogues: [
       {
         id: "dialogue-pack-1000-delay",
@@ -690,7 +690,7 @@ function pack1000CityMovement(): PackInput {
     summary: "Airport, station, and changing plans.",
     unlockAtWordCount: 1000,
     themeTags: ["transport", "time", "location"],
-    sentenceIds: ["curated-091", "curated-092", "curated-095"],
+    sentenceIds: ["curated-082", "curated-083", "curated-084"],
     dialogues: [
       {
         id: "dialogue-pack-1000-city",

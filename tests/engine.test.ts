@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { isValidCombination } from "../src/compatibility";
 import { curriculumPolicyForTier, curriculumTierPolicies, validateCurriculumPack } from "../src/curriculum";
+import type { IslandTag } from "../src/models";
 import { curriculumPacks } from "../src/data/curriculumContent";
 import { curatedSentences } from "../src/data/curatedSentences";
 import { hskSeedLexicon, lexicon, lexiconBuildReport } from "../src/data/lexicon";
@@ -841,6 +842,69 @@ test("curriculum packs validate cleanly and stay staged by unlock threshold", ()
   assert.equal(currentPacks.every((pack) => pack.tierId === "100-tier"), true);
   assert.equal(lockedPacks.every((pack) => pack.unlockAtWordCount > lexicon.length), true);
   assert.equal(generateLockedSentences().every((sentence) => (sentence.unlockAtWordCount ?? 0) > lexicon.length), true);
+});
+
+test("curriculum validation rejects weak CI reading math", () => {
+  const known = new Set(lexicon.map((entry) => entry.id));
+  const basePack = curriculumPacks[0];
+  const baseReading = basePack.readings[0];
+  const firstLine = baseReading.sentences[0];
+
+  const badCoveragePack = {
+    ...basePack,
+    id: "test-bad-reading-coverage",
+    readings: [{ ...baseReading, id: "test-reading-low-coverage", knownVocabularyCoverage: 0.9 }]
+  };
+  assert.deepEqual(validateCurriculumPack(badCoveragePack, known).filter((issue) => issue.includes("invalid CI+1 coverage")), ["Reading test-reading-low-coverage has invalid CI+1 coverage"]);
+
+  const tooManyNewWordsPack = {
+    ...basePack,
+    id: "test-too-many-new-words",
+    readings: [
+      {
+        ...baseReading,
+        id: "test-reading-too-many-new",
+        sentences: [{ ...firstLine, newWordIds: ["wo", "ni", "hao"] }, ...baseReading.sentences.slice(1)]
+      }
+    ]
+  };
+  assert.equal(validateCurriculumPack(tooManyNewWordsPack, known).some((issue) => issue.includes("too many new words")), true);
+
+  const zeroNewWordPack = {
+    ...basePack,
+    id: "test-zero-new-word-reading",
+    readings: [
+      {
+        ...baseReading,
+        id: "test-reading-zero-new",
+        ciPlusOneValid: true,
+        sentences: baseReading.sentences.map((sentence) => ({ ...sentence, newWordIds: [] }))
+      }
+    ]
+  };
+  assert.equal(validateCurriculumPack(zeroNewWordPack, known).some((issue) => issue.includes("no controlled new word")), true);
+});
+
+test("curriculum validation rejects early adult themes even when pack tags are benign", () => {
+  const known = new Set(lexicon.map((entry) => entry.id));
+  const basePack = generateCurriculumPacks(300).find((pack) => pack.tierId === "300-tier");
+  assert.ok(basePack);
+
+  const hiddenWorkSentencePack = {
+    ...basePack,
+    id: "test-hidden-work-sentence",
+    themeTags: ["daily-life", "time"] as IslandTag[],
+    sentences: [{ ...basePack.sentences[0], id: "test-work-line", themeTags: ["work"] as IslandTag[] }]
+  };
+  assert.equal(validateCurriculumPack(hiddenWorkSentencePack, known).some((issue) => issue.includes("Forbidden sentence theme work")), true);
+
+  const hiddenHealthReadingPack = {
+    ...basePack,
+    id: "test-hidden-health-reading",
+    themeTags: ["daily-life", "time"] as IslandTag[],
+    readings: [{ ...basePack.readings[0], id: "test-health-reading", islandTags: ["health"] as IslandTag[] }]
+  };
+  assert.equal(validateCurriculumPack(hiddenHealthReadingPack, known).some((issue) => issue.includes("Forbidden reading theme health")), true);
 });
 
 test("draft sentence generation remains review material only", () => {

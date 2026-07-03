@@ -3,7 +3,7 @@
 ## Verification
 
 - `npm.cmd test`: passed.
-- Test result: 49 passed, 0 failed after Phase 4 plan 04-01.
+- Test result: 51 passed, 0 failed after Phase 4 plan 04-02.
 - `npm.cmd run web:build`: passed after rerunning outside the filesystem sandbox.
 - Initial web build failure cause: Vite/esbuild could not read parent directories under sandbox restrictions and could not resolve `vite.config.ts`.
 
@@ -17,11 +17,12 @@
 - Pan-Mandarin accepted review candidates: 4807.
 - Pan-Mandarin needs-human-review candidates: 3375.
 - Learner-facing curated sentences: 51.
-- Sentence stream items: 49.
-- Review-only sentences: 23.
-- Blocked CI sentences: 21 after replacing a duplicate locked-pack sentence mapping.
+- Locked learner-facing future sentences: 16 after removing early work/health sentence mappings from pre-2000 packs.
+- Sentence stream items: 47.
+- Review-only sentences: 22.
+- Blocked CI sentences: 22.
 - CI sentence targets: 10000.
-- CI targets needing curation: 9960.
+- CI targets needing curation: 9961.
 - CI curation queue: 500.
 - Authorable CI curation queue: 476.
 - CI authoring packets: 4.
@@ -29,7 +30,7 @@
 - Authored CI sentences accepted: 24.
 - Authored CI sentences rejected: 0.
 - Promoted authored CI stream items: 24.
-- Total CI exposure deficit: 98351.
+- Total CI exposure deficit: 98353.
 - Daily shadow days: 1000.
 - Daily shadow items: 10000.
 - SRS daily plan days: 1000.
@@ -85,7 +86,7 @@ Pan-Mandarin source modes:
 
 ## Next Route
 
-Phase 4 is in progress. Plan `04-01` is complete; continue with plan `04-02`: Reading And Tier Policy Regression Gates.
+Phase 4 is in progress. Plans `04-01` and `04-02` are complete; continue with plan `04-03`: Pan-Mandarin Review Queue Metadata.
 
 Phase 4 plan set:
 
@@ -98,3 +99,5 @@ Phase 4 plan set:
 
 - Full generation now has regression coverage for active learner-facing packs, locked packs, draft sentences, and review-only sentence-stream report items.
 - `pack-300-transit-light` no longer reuses active 100-tier sentence `curated-050`; it uses transport/location sentence `curated-081` instead.
+- Curriculum validation now rejects readings outside 95-98% known coverage, readings with no controlled new word, reading lines with more than two new words, and hidden forbidden themes on sentences, dialogues, or readings.
+- Pre-2000 packs no longer use work/health-tagged source sentences through benign pack tags.

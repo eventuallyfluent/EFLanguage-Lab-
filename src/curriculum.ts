@@ -32,7 +32,7 @@ export const curriculumTierPolicies: CurriculumTierPolicy[] = [
     minKnownWords: 1000,
     label: "Practical bridge",
     requiredThemes: ["transport", "time", "location", "social", "shopping"],
-    forbiddenThemes: ["health"],
+    forbiddenThemes: ["work", "health"],
     targetSentenceCount: 100,
     dialogueCount: 3,
     readingCount: 3,
@@ -98,10 +98,16 @@ export function validateCurriculumPack(pack: CurriculumPack, knownLexiconIds: Se
   for (const sentence of pack.sentences) {
     if ((sentence.unlockAtWordCount ?? 0) > pack.unlockAtWordCount) issues.push(`Sentence ${sentence.id} unlocks after pack ${pack.id}`);
     if (!sentence.vocabularyIds.every((id) => knownLexiconIds.has(id))) issues.push(`Sentence ${sentence.id} uses unknown vocabulary`);
+    for (const forbidden of policy.forbiddenThemes) {
+      if ((sentence.themeTags ?? []).includes(forbidden)) issues.push(`Forbidden sentence theme ${forbidden} in ${sentence.id}`);
+    }
   }
 
   for (const dialogue of pack.dialogues) {
     if (dialogue.unlockAtWordCount > pack.unlockAtWordCount) issues.push(`Dialogue ${dialogue.id} unlocks after pack ${pack.id}`);
+    for (const forbidden of policy.forbiddenThemes) {
+      if (dialogue.islandTags.includes(forbidden)) issues.push(`Forbidden dialogue theme ${forbidden} in ${dialogue.id}`);
+    }
     for (const turn of dialogue.turns) {
       if (!turn.vocabularyIds.every((id) => knownLexiconIds.has(id))) issues.push(`Dialogue ${dialogue.id} uses unknown vocabulary`);
     }
@@ -110,8 +116,14 @@ export function validateCurriculumPack(pack: CurriculumPack, knownLexiconIds: Se
   for (const reading of pack.readings) {
     if (reading.unlockAtWordCount > pack.unlockAtWordCount) issues.push(`Reading ${reading.id} unlocks after pack ${pack.id}`);
     if (!isComplexityAllowed(reading.complexity, policy.maxClauseComplexity)) issues.push(`Reading ${reading.id} exceeds tier complexity`);
+    if (reading.knownVocabularyCoverage < 0.95 || reading.knownVocabularyCoverage > 0.98) issues.push(`Reading ${reading.id} has invalid CI+1 coverage`);
     if (!reading.ciPlusOneValid) issues.push(`Reading ${reading.id} failed CI+1 validation`);
+    if (reading.sentences.every((sentence) => sentence.newWordIds.length === 0)) issues.push(`Reading ${reading.id} has no controlled new word`);
+    for (const forbidden of policy.forbiddenThemes) {
+      if (reading.islandTags.includes(forbidden)) issues.push(`Forbidden reading theme ${forbidden} in ${reading.id}`);
+    }
     for (const sentence of reading.sentences) {
+      if (sentence.newWordIds.length > 2) issues.push(`Reading ${reading.id} sentence introduces too many new words`);
       if (!sentence.vocabularyIds.every((id) => knownLexiconIds.has(id)) || !sentence.newWordIds.every((id) => knownLexiconIds.has(id))) {
         issues.push(`Reading ${reading.id} uses unknown vocabulary`);
       }
