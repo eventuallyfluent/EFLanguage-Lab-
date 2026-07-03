@@ -3,10 +3,10 @@ gsd_state_version: 1.0
 milestone: v0.1
 milestone_name: milestone
 status: planning
-last_updated: "2026-07-03T15:00:00.000Z"
+last_updated: "2026-07-03T15:10:00.000Z"
 progress:
   total_phases: 6
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 10
   completed_plans: 10
 ---
@@ -14,14 +14,14 @@ progress:
 # State: Eventually Fluent Mandarin
 
 **Updated:** 2026-07-03
-**Status:** Phase 4 implementation complete; verification pending
+**Status:** Phase 4 complete; Phase 5 ready to plan
 
 ## Project Reference
 
 See: `.planning/PROJECT.md` (updated 2026-07-03)
 
 **Core value:** The engine must produce a natural, source-backed 10k CI+1 Mandarin sentence ladder that can carry acquisition; every other surface supports that ladder.
-**Current focus:** Phase 4 - Curriculum, Islands, And Review Queues
+**Current focus:** Phase 5 - Shadowing And SRS Support
 
 ## Current Position
 
@@ -89,7 +89,7 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - Verified `npm.cmd test`: 47 passed, 0 failed.
 - Verified `npm.cmd run web:build`: passed after sandbox-escalated rerun.
 
-## Planned Phase
+## Completed Phase
 
 ### Phase 4: Curriculum, Islands, And Review Queues
 
@@ -115,6 +115,9 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - `04-02`: Added reading math and early-tier theme regression gates; removed masked work/health source lines from pre-2000 packs.
 - `04-03`: Added actionable metadata to pan-Mandarin review-only queue items.
 - `04-04`: Added generated curriculum content contract and public data copy.
+- Verified `npm.cmd test`: 52 passed, 0 failed.
+- Verified `npm.cmd run web:build`: passed after sandbox-escalated rerun.
+- Created `.planning/phases/04-curriculum-islands-and-review-queues/04-VERIFICATION.md`.
 
 ## Key Decisions
 
@@ -160,7 +163,8 @@ See: `.planning/PROJECT.md` (updated 2026-07-03)
 - Completed `04-02`: Reading And Tier Policy Regression Gates.
 - Completed `04-03`: Pan-Mandarin Review Queue Metadata.
 - Completed `04-04`: Curriculum Output Contract And Web Data Alignment.
+- Created `.planning/phases/04-curriculum-islands-and-review-queues/04-VERIFICATION.md`.
 
 ## Next Action
 
-Run Phase 4 verification and close Curriculum, Islands, And Review Queues if checks pass.
+Run `$gsd-plan-phase 5` to create atomic plans for Shadowing And SRS Support.

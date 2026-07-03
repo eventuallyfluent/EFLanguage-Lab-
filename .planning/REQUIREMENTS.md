@@ -29,12 +29,12 @@
 
 ### Curriculum And Content
 
-- [ ] **CURR-01**: Learner-facing sentence exports remain curated-only.
-- [ ] **CURR-02**: Draft/template-generated material remains separated from learner-facing content.
-- [ ] **CURR-03**: Readings maintain CI+1 known-word coverage and staged complexity.
-- [ ] **CURR-04**: Language islands do not unlock before roughly 1000 known words.
-- [ ] **CURR-05**: Work, health, money pressure, admin pressure, and serious adult logistics remain staged at 2000+.
-- [ ] **CURR-06**: Review-only pan-Mandarin island/story material has a clear path toward human curation.
+- [x] **CURR-01**: Learner-facing sentence exports remain curated-only.
+- [x] **CURR-02**: Draft/template-generated material remains separated from learner-facing content.
+- [x] **CURR-03**: Readings maintain CI+1 known-word coverage and staged complexity.
+- [x] **CURR-04**: Language islands do not unlock before roughly 1000 known words.
+- [x] **CURR-05**: Work, health, money pressure, admin pressure, and serious adult logistics remain staged at 2000+.
+- [x] **CURR-06**: Review-only pan-Mandarin island/story material has a clear path toward human curation.
 
 ### Shadowing And SRS
 
@@ -90,12 +90,12 @@
 | CI-03 | Phase 3 | Complete |
 | CI-04 | Phase 3 | Complete |
 | CI-05 | Phase 3 | Complete |
-| CURR-01 | Phase 4 | Planned |
-| CURR-02 | Phase 4 | Planned |
-| CURR-03 | Phase 4 | Planned |
-| CURR-04 | Phase 4 | Planned |
-| CURR-05 | Phase 4 | Planned |
-| CURR-06 | Phase 4 | Planned |
+| CURR-01 | Phase 4 | Complete |
+| CURR-02 | Phase 4 | Complete |
+| CURR-03 | Phase 4 | Complete |
+| CURR-04 | Phase 4 | Complete |
+| CURR-05 | Phase 4 | Complete |
+| CURR-06 | Phase 4 | Complete |
 | SHAD-01 | Phase 5 | Pending |
 | SHAD-02 | Phase 5 | Pending |
 | SRS-01 | Phase 5 | Pending |
@@ -112,4 +112,4 @@
 
 ---
 *Requirements defined: 2026-07-03*
-*Last updated: 2026-07-03 after Phase 4 planning*
+*Last updated: 2026-07-03 after Phase 4 completion*
